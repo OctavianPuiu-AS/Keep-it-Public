@@ -64,17 +64,23 @@ nav.links a {
   display: inline-block; padding: 4px 16px; border: 1px solid var(--clay); border-radius: 999px;
   font-size: 14px; font-weight: 700; color: var(--clay); text-decoration: none; letter-spacing: 0.02em;
 }
+nav.links a { box-shadow: 3px 3px 0 -1px var(--ground), 3px 3px 0 0 var(--clay); }
 nav.links a:hover { background: var(--clay); color: var(--card); }
 
-/* sections */
+/* page title: the one line that runs to the window edge (Hub style) */
+.pagehead { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.marker { display: flex; align-items: center; flex-shrink: 0; }
+.marker i { display: block; width: 28px; height: 2px; background: var(--clay); position: relative; }
+.marker i::before { content: ""; position: absolute; right: 100%; top: 0; width: 100vw; height: 2px; background: var(--clay); }
+.marker b { display: block; width: 18px; height: 18px; border-radius: 50%; background: var(--clay); }
+h1 { margin: 0; font-size: clamp(26px, 4vw, 34px); font-weight: 700; color: var(--clay); letter-spacing: 0.02em; line-height: 1.15; }
+.live { padding: 2px 12px; border: 1px solid var(--clay); border-radius: 999px; font-size: 13px; font-weight: 700; color: var(--clay); white-space: nowrap; }
+
+/* sections: title + faint rule */
 section { display: flex; flex-direction: column; gap: 14px; }
 .sec { display: flex; align-items: center; gap: 14px; }
-.sec .marker { display: flex; align-items: center; flex-shrink: 0; }
-.sec .marker i { display: block; width: 22px; height: 2px; background: var(--clay); position: relative; }
-.sec .marker i::before { content: ""; position: absolute; right: 100%; top: 0; width: 100vw; height: 2px; background: var(--clay); }
-.sec .marker b { display: block; width: 12px; height: 12px; border-radius: 50%; background: var(--clay); }
-h2 { margin: 0; font-size: 22px; font-weight: 700; color: var(--clay); letter-spacing: 0.02em; text-wrap: balance; }
-.sec span.rule { flex: 1; height: 1px; background: var(--clay); opacity: 0.35; }
+h2 { margin: 0; font-size: 19px; font-weight: 700; color: var(--clay); letter-spacing: 0.04em; text-wrap: balance; }
+.sec span.rule { flex: 1; min-width: 40px; height: 1px; background: var(--clay); opacity: 0.4; }
 h3 { margin: 0; font-size: 18px; color: var(--ink); }
 
 .note { padding: 12px 18px; border: 1px solid var(--clay); border-radius: 14px; background: var(--card); text-align: center; font-weight: 500; }

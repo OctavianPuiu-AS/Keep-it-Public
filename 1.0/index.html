@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=5">
+<link rel="stylesheet" href="../assets/docs.css?v=6">
 </head>
 <body data-version="1.0" data-page="index.html">
 
@@ -25,6 +25,11 @@
 <aside class="side" id="side" aria-label="Contents"></aside>
 
 <main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Keep it docs</h1>
+    <span class="live">1.0</span>
+  </header>
   <p class="oldver" id="oldver"></p>
   <div id="search"></div>
 
@@ -40,7 +45,7 @@
   </nav>
 
   <section id="welcome" data-keywords="intro, thanks, discord, support">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Welcome!</h2><span class="rule"></span></div>
+    <div class="sec"><h2>Welcome!</h2><span class="rule"></span></div>
     <p>Thank you for choosing Keep it. It means a lot and I genuinely hope it makes your work faster and a little more fun.</p>
     <p>Keep it started as a tool I wished I had: a way to save a scene exactly as it is, keep the looks and angles I liked, and render them all in one go without losing anything. This documentation covers it all, step by step. Dive in whenever you're ready.</p>
     <figure class="shot media"><video autoplay muted loop playsinline preload="metadata" poster="../assets/media/intro-poster.jpg" aria-label="Keep it intro animation"><source src="../assets/media/intro.mp4" type="video/mp4"></video></figure>
@@ -48,7 +53,7 @@
   </section>
 
   <section id="what" data-keywords="overview, captures, views, variants, profiles, batch render">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>What is Keep it?</h2><span class="rule"></span></div>
+    <div class="sec"><h2>What is Keep it?</h2><span class="rule"></span></div>
     <p>Keep it is a scene-state and batch-render tool for Blender. Instead of manually toggling lights, swapping materials, and hiding objects every time you want a different version of your scene, you save each version once — then bring any of them back with a single click, or render every combination automatically.</p>
     <p>You define your scene variations once (captures), your camera angles once (views), and your technical output requirements once (variants and profiles) — then Keep it handles every combination.</p>
     <figure class="shot media"><iframe src="https://www.youtube-nocookie.com/embed/Aoupzy_Cr18" title="Keep it 1.0 — Official Release" loading="lazy" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></figure>
@@ -76,7 +81,7 @@
   </section>
 
   <section id="disclaimer" data-keywords="limits, backup, geometry, animation">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Disclaimer</h2><span class="rule"></span></div>
+    <div class="sec"><h2>Disclaimer</h2><span class="rule"></span></div>
     <div class="card">
       <p>Keep it is a scene-state capture/restore and batch-render tool. To use it safely and set the right expectations, here's what it deliberately does <strong>not</strong> do.</p>
       <ul>
@@ -88,7 +93,7 @@
   </section>
 
   <section id="versions" data-keywords="blender, compatibility, requirements">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Supported versions</h2><span class="rule"></span></div>
+    <div class="sec"><h2>Supported versions</h2><span class="rule"></span></div>
     <p>Keep it requires <strong>Blender 5.0 or newer</strong>, and is tested against:</p>
     <div class="versions"><span>5.0</span><span>5.1</span><span>5.2</span><span>5.3</span></div>
   </section>

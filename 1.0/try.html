@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=5">
+<link rel="stylesheet" href="../assets/docs.css?v=6">
 <style>
   .play, .stage { display: flex; flex-direction: column; gap: 16px; }
   .vp { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: #F2EBE3; isolation: isolate; }
@@ -123,16 +123,21 @@
 <aside class="side" id="side" aria-label="Contents"></aside>
 
 <main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Try it</h1>
+    <span class="live">in your browser</span>
+  </header>
   <p class="oldver" id="oldver"></p>
   <div id="search"></div>
 
   <section id="try" data-keywords="demo, playground, browser, trial">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Try it</h2><span class="rule"></span></div>
+    <div class="sec"><h2>A sketch, not the add-on</h2><span class="rule"></span></div>
     <p>A tiny scene of three cubes, running in your browser. It isn’t Blender and it isn’t the add-on — it’s a sketch of how Keep it works, so you can get a feel for it before you install anything.</p>
   </section>
 
   <section id="playground" data-keywords="capture, restore, latest, view, camera, render, sheet">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Playground</h2><span class="rule"></span></div>
+    <div class="sec"><h2>Playground</h2><span class="rule"></span></div>
     <div class="play" id="play">
       <div class="stage">
       <div class="vp dbl" id="vp">
@@ -179,7 +184,7 @@
   </section>
 
   <section id="steps" data-title="Things to try" data-keywords="capture, restore, latest, scope, view, render, sheet">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Things to try</h2><span class="rule"></span></div>
+    <div class="sec"><h2>Things to try</h2><span class="rule"></span></div>
     <ol class="three">
       <li>
         <h3>Capture a setup</h3>
@@ -209,7 +214,7 @@
   </section>
 
   <section id="blender" data-title="In Blender" data-keywords="add-on, install, real scene">
-    <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>In Blender</h2><span class="rule"></span></div>
+    <div class="sec"><h2>In Blender</h2><span class="rule"></span></div>
     <div class="card">
       <p>The playground keeps four things about three objects. The add-on works on your whole scene:</p>
       <ul>
