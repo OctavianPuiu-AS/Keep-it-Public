@@ -21,6 +21,15 @@
     return e;
   }
   function getJSON(url) { return fetch(url, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw r; return r.json(); }); }
+  // nav.json pages form a tree ({file, title, children}); most things want it flat, in reading order
+  function flat(list, depth, parent, out) {
+    out = out || [];
+    (list || []).forEach(function (p) {
+      out.push({ file: p.file, title: p.title, depth: depth || 0, parent: parent || null, children: p.children || [] });
+      flat(p.children, (depth || 0) + 1, p, out);
+    });
+    return out;
+  }
   function sectionTitle(s) {
     var h = s.querySelector('h2');
     return s.dataset.title || (h ? h.textContent.trim() : '');
@@ -36,6 +45,8 @@
   Promise.all([getJSON(ROOT + 'versions.json'), getJSON('nav.json')]).then(function (r) {
     var versions = r[0], nav = r[1];
     buildSide(versions, nav);
+    buildKids(nav);
+    buildPager(nav);
     buildSearch(nav);
     oldVersionNote(versions);
   }).catch(function () {
@@ -56,17 +67,23 @@
     sel.addEventListener('change', function () {
       var to = sel.value;
       getJSON(ROOT + to + '/nav.json').then(function (n) {
-        var has = n.pages.some(function (p) { return p.file === PAGE; });
+        var has = flat(n.pages).some(function (p) { return p.file === PAGE; });
         location.href = ROOT + to + '/' + (has ? PAGE : 'index.html') + (has ? location.hash : '');
       }).catch(function () { location.href = ROOT + to + '/'; });
     });
 
-    var pages = el('ul');
-    nav.pages.forEach(function (p) {
-      var a = el('a', { href: p.file, text: p.title });
-      if (p.file === PAGE) a.setAttribute('aria-current', 'page');
-      pages.appendChild(el('li', null, [a]));
-    });
+    function tree(list, depth) {
+      var ul = el('ul', depth ? { class: 'sub' } : null);
+      list.forEach(function (p) {
+        var a = el('a', { href: p.file, text: p.title });
+        if (p.file === PAGE) a.setAttribute('aria-current', 'page');
+        var li = el('li', null, [a]);
+        if (p.children && p.children.length) li.appendChild(tree(p.children, depth + 1));
+        ul.appendChild(li);
+      });
+      return ul;
+    }
+    var pages = tree(nav.pages, 0);
 
     var toc = el('ul', { class: 'toc' });
     sections.forEach(function (s) {
@@ -100,6 +117,35 @@
       }, { rootMargin: '-20% 0px -70% 0px' });
       sections.forEach(function (s) { io.observe(s); });
     }
+  }
+
+  /* ---------- a group page lists what's inside it ---------- */
+  function buildKids(nav) {
+    var box = document.getElementById('kids');
+    if (!box) return;
+    var me = flat(nav.pages).filter(function (p) { return p.file === PAGE; })[0];
+    if (!me || !me.children.length) return;
+    me.children.forEach(function (c) {
+      var inner = (c.children || []).map(function (g) { return g.title; }).join(' · ');
+      box.appendChild(el('a', { href: c.file, class: 'kid' }, [
+        el('span', { class: 't', text: c.title }),
+        inner ? el('span', { class: 'd', text: inner }) : null
+      ]));
+    });
+  }
+
+  /* ---------- previous / next, in the order of the contents ---------- */
+  function buildPager(nav) {
+    var main = document.querySelector('main');
+    var all = flat(nav.pages), i = -1;
+    all.forEach(function (p, k) { if (p.file === PAGE) i = k; });
+    if (!main || i < 0) return;
+    var prev = all[i - 1], next = all[i + 1];
+    if (!prev && !next) return;
+    var bar = el('nav', { class: 'pager', 'aria-label': 'Previous and next page' });
+    bar.appendChild(prev ? el('a', { href: prev.file, class: 'prev' }, [el('span', { class: 'k', text: 'Previous' }), el('span', { class: 't', text: prev.title })]) : el('span'));
+    bar.appendChild(next ? el('a', { href: next.file, class: 'next' }, [el('span', { class: 'k', text: 'Next' }), el('span', { class: 't', text: next.title })]) : el('span'));
+    main.appendChild(bar);
   }
 
   function oldVersionNote(versions) {
@@ -147,7 +193,7 @@
     var others = null;
     function loadOthers() {
       if (others) return others;
-      var list = (nav.pages || []).filter(function (p) { return p.file !== PAGE; });
+      var list = flat(nav.pages).filter(function (p) { return p.file !== PAGE; });
       others = Promise.all(list.map(function (p) {
         return fetch(p.file).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
           var doc = new DOMParser().parseFromString(html, 'text/html');

@@ -42,6 +42,8 @@ p { margin: 0; }
 .side a:hover { color: var(--clay); border-left-color: var(--clay); }
 .side a[aria-current="page"], .side a.on { color: var(--clay); border-left-color: var(--clay); font-weight: 700; }
 .side .toc a { font-size: 14px; padding-left: 16px; }
+.side ul.sub a { font-size: 14px; padding-left: 22px; }
+.side ul.sub ul.sub a { font-size: 13.5px; padding-left: 34px; }
 
 .ver { display: flex; flex-direction: column; gap: 6px; }
 .ver label { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--soft); }
@@ -134,8 +136,19 @@ kbd { font: 700 12px/1 var(--font); color: var(--soft); border: 1px solid var(--
 mark { background: rgba(158, 83, 48, 0.18); color: inherit; border-radius: 3px; padding: 0 1px; }
 section.miss, .three li.miss { display: none; }
 
+/* group pages, placeholders, previous / next */
+.kids { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.kid, .pager a { display: flex; flex-direction: column; gap: 2px; padding: 14px 18px; border: 1px solid var(--clay); border-radius: 16px; background: var(--card); color: var(--ink); text-decoration: none; }
+.kid:hover, .pager a:hover { background: var(--tint); color: var(--ink); }
+.kid .t, .pager .t { font-weight: 700; color: var(--clay); }
+.kid .d { font-size: 13.5px; color: var(--soft); }
+.soon { padding: 14px 18px; border: 1px dashed var(--clay); border-radius: 16px; color: var(--soft); }
+.pager { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 12px; }
+.pager .next { text-align: right; }
+.pager .k { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--soft); }
+
 /* the Alalong double contour: a second clay outline offset behind the box */
-.banner, .card, .note, .shot.media, .results, .dbl { box-shadow: 5px 5px 0 -1px var(--ground), 5px 5px 0 0 var(--clay); }
+.banner, .card, .note, .shot.media, .results, .dbl, .kid, .pager a { box-shadow: 5px 5px 0 -1px var(--ground), 5px 5px 0 0 var(--clay); }
 
 footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 

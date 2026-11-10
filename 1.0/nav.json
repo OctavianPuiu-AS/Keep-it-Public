@@ -1,7 +1,106 @@
 {
   "pages": [
-    { "file": "index.html", "title": "Welcome" },
-    { "file": "try.html", "title": "Try it" }
+    {
+      "file": "index.html",
+      "title": "Welcome"
+    },
+    {
+      "file": "try.html",
+      "title": "Try it"
+    },
+    {
+      "file": "getting-started.html",
+      "title": "Getting Started",
+      "children": [
+        {
+          "file": "installation.html",
+          "title": "Installation"
+        },
+        {
+          "file": "quickstart.html",
+          "title": "Quickstart"
+        },
+        {
+          "file": "core-concepts.html",
+          "title": "Core Concepts"
+        }
+      ]
+    },
+    {
+      "file": "user-guide.html",
+      "title": "User Guide",
+      "children": [
+        {
+          "file": "main-panel.html",
+          "title": "Main panel",
+          "children": [
+            {
+              "file": "capture-categories.html",
+              "title": "Capture Categories"
+            },
+            {
+              "file": "capture-scope.html",
+              "title": "Capture Scope"
+            },
+            {
+              "file": "capture-settings.html",
+              "title": "Capture Settings"
+            }
+          ]
+        },
+        {
+          "file": "views-panel.html",
+          "title": "Views panel"
+        },
+        {
+          "file": "render-panel.html",
+          "title": "Render panel"
+        },
+        {
+          "file": "preferences.html",
+          "title": "Preferences"
+        },
+        {
+          "file": "tips.html",
+          "title": "Tips & Best Practices"
+        },
+        {
+          "file": "cheat-sheet.html",
+          "title": "Cheat Sheet"
+        }
+      ]
+    },
+    {
+      "file": "tiers.html",
+      "title": "Tiers"
+    },
+    {
+      "file": "troubleshooting.html",
+      "title": "Troubleshooting",
+      "children": [
+        {
+          "file": "reporting-bugs.html",
+          "title": "Reporting bugs"
+        },
+        {
+          "file": "limitations.html",
+          "title": "Limitations and Known Issues"
+        },
+        {
+          "file": "common-issues.html",
+          "title": "Common Issues"
+        }
+      ]
+    }
   ],
-  "keywords": ["capture", "restore", "view", "render", "job", "variants", "profiles", "blender"]
+  "keywords": [
+    "capture",
+    "restore",
+    "view",
+    "render",
+    "job",
+    "variants",
+    "profiles",
+    "blender"
+  ]
 }
