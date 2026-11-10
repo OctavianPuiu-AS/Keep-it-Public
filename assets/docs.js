@@ -258,6 +258,8 @@
       if (lost > 0) window.scrollBy(0, -lost);
     }, { passive: true });
     function unfold() { host.classList.remove('compact'); }
+    function done() { q.blur(); host.classList.add('compact'); }  // a result was picked
+    results.addEventListener('click', function (e) { if (e.target.closest('a')) done(); });
     q.addEventListener('focus', unfold);
     q.addEventListener('click', unfold);
     q.addEventListener('input', unfold);
@@ -357,6 +359,7 @@
     q.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         var first = document.querySelector('main section:not(.miss) mark') || results.querySelector('a');
+        if (first) done();
         if (first && first.tagName === 'A') location.href = first.href;
         else if (first) first.scrollIntoView({ block: 'center' });
       }
@@ -368,7 +371,7 @@
     });
 
     var start = new URLSearchParams(location.search).get('q');
-    if (start) { q.value = start; run(); }
+    if (start) { q.value = start; run(); host.classList.add('compact'); }
   }
   // looping videos stay still for people who asked for less motion
   if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
