@@ -34,8 +34,10 @@ p { margin: 0; }
 .banner .cat { font-size: clamp(16px, 2vw, 22px); color: var(--clay); letter-spacing: 0.08em; text-align: center; }
 .mark { width: clamp(96px, 12vw, 140px); }
 
-/* page frame: contents on the left, the page on the right */
-.frame { max-width: 1180px; margin: 28px auto 0; display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 48px; align-items: start; }
+/* page frame: the page on the left (section lines run to the left edge), contents on the right */
+.frame { max-width: 1180px; margin: 28px auto 0; display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 56px; align-items: start; }
+.frame > main { grid-column: 1; grid-row: 1; justify-self: end; width: 100%; }
+.frame > .side { grid-column: 2; grid-row: 1; }
 .side { position: sticky; top: 16px; display: flex; flex-direction: column; gap: 18px; font-size: 15px; max-height: calc(100vh - 32px); overflow-y: auto; padding-bottom: 8px; }
 .side h4 { margin: 0 0 6px; font-size: 12px; font-weight: 700; letter-spacing: 0.1em; color: var(--soft); }
 .side ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
@@ -133,6 +135,8 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
 .side-toggle { display: none; }
 @media (max-width: 900px) {
   .frame { grid-template-columns: 1fr; gap: 20px; }
+  .frame > .side { grid-column: 1; grid-row: 1; }
+  .frame > main { grid-row: 2; }
   .side { position: static; max-height: none; border: 1px solid var(--hair); border-radius: 16px; background: var(--card); padding: 14px 16px; }
   .side-toggle { display: flex; justify-content: space-between; align-items: center; width: 100%; font: 700 14px var(--font); color: var(--clay); background: none; border: 0; padding: 0; cursor: pointer; }
   .side .body { display: none; flex-direction: column; gap: 18px; margin-top: 12px; }
