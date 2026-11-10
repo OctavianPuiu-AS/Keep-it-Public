@@ -24,15 +24,12 @@ a:hover { color: var(--clay-deep); }
 a:focus-visible, button:focus-visible, select:focus-visible { outline: 1px solid var(--clay); outline-offset: 3px; }
 p { margin: 0; }
 
-/* banner */
-.banner {
-  max-width: 1180px; margin: 0 auto;
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px;
-  padding: 26px 36px; border: 1px solid var(--clay); border-radius: 20px; background: var(--card);
-}
-.banner .tag { margin: 0; font-size: clamp(18px, 2.4vw, 26px); font-weight: 500; color: var(--clay); letter-spacing: 0.03em; text-align: center; }
-.banner .cat { font-size: clamp(16px, 2vw, 22px); color: var(--clay); letter-spacing: 0.08em; text-align: center; }
-.mark { width: clamp(96px, 12vw, 140px); }
+/* banner: the cover artwork; a stacked version on phones */
+.banner { max-width: 1180px; margin: 0 auto; border: 1px solid var(--clay); border-radius: 20px; background: #F9F5F2; overflow: hidden; }
+.banner-full { display: block; width: 100%; height: auto; }
+.banner-small { display: none; }
+.banner .tag { margin: 0; font-size: 20px; font-weight: 500; color: var(--clay); letter-spacing: 0.03em; text-align: center; }
+.banner .cat { font-size: 17px; color: var(--clay); letter-spacing: 0.08em; text-align: center; }
 
 /* page frame: the page on the left (section lines run to the left edge), contents on the right */
 .frame { max-width: 1180px; margin: 28px auto 0; display: grid; grid-template-columns: minmax(0, 1fr) 230px; gap: 56px; align-items: start; }
@@ -86,7 +83,9 @@ figure { margin: 0; }
   aspect-ratio: 16 / 9; border: 1px solid var(--hair); border-radius: 14px; background: var(--card);
   display: grid; place-items: center; color: var(--soft); font-size: 14px; text-align: center; padding: 16px;
 }
-.shot img, .shot iframe { width: 100%; height: 100%; border: 0; border-radius: 13px; object-fit: cover; }
+.shot img, .shot iframe, .shot video { width: 100%; height: 100%; border: 0; border-radius: 13px; object-fit: cover; }
+.shot.media { padding: 0; overflow: hidden; background: #F9F5F2; border-color: var(--clay); }
+.shot video { display: block; }
 
 .three { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 28px; counter-reset: n; }
 .three li { counter-increment: n; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 4px 12px; }
@@ -145,7 +144,8 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
 }
 @media (min-width: 901px) { .side .body { display: flex; flex-direction: column; gap: 18px; } }
 @media (max-width: 640px) {
-  .banner { grid-template-columns: 1fr; padding: 22px 18px; gap: 10px; justify-items: center; }
-  .banner .mark { order: -1; }
+  .banner-full { display: none; }
+  .banner-small { display: grid; justify-items: center; gap: 6px; padding: 20px 18px 22px; }
+  .banner-small img { width: 150px; height: auto; margin-bottom: 6px; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }

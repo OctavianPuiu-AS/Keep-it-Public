@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=3">
+<link rel="stylesheet" href="../assets/docs.css?v=4">
 <style>
   .play, .stage { display: flex; flex-direction: column; gap: 16px; }
   .vp { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: #F2EBE3; isolation: isolate; }
@@ -111,14 +111,12 @@
 <body data-version="1.0" data-page="try.html">
 
 <header class="banner">
-  <p class="tag">One scene. Infinite moments.</p>
-  <!-- placeholder mark: replace with the Keep it box logo image -->
-  <svg class="mark" viewBox="0 0 140 120" role="img" aria-label="Keep it">
-    <path d="M20 30 L70 10 L120 30 L120 100 L70 118 L20 100 Z" fill="#F9F4F0" stroke="#9E5330" stroke-width="2"/>
-    <path d="M20 30 L70 48 L120 30 M70 48 L70 118" fill="none" stroke="#9E5330" stroke-width="1.5" opacity=".5"/>
-    <text x="70" y="86" text-anchor="middle" font-family="Jost, Futura, sans-serif" font-weight="700" font-style="italic" font-size="22" fill="#9E5330">KEEP IT</text>
-  </svg>
-  <p class="cat">scene management</p>
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
 </header>
 
 <div class="frame">
@@ -227,10 +225,10 @@
 
 <footer>
   <span>Keep it — scene management for Blender</span>
-  <a href="https://alalongstudio.com">Alalong Studio</a>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
 </footer>
 
-<script src="../assets/docs.js?v=3"></script>
+<script src="../assets/docs.js?v=4"></script>
 <script src="../assets/try.js?v=3"></script>
 </body>
 </html>

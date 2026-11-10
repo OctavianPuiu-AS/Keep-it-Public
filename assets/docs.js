@@ -269,4 +269,10 @@
     var start = new URLSearchParams(location.search).get('q');
     if (start) { q.value = start; run(); }
   }
+  // looping videos stay still for people who asked for less motion
+  if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    Array.prototype.forEach.call(document.querySelectorAll('video[autoplay]'), function (v) {
+      v.removeAttribute('autoplay'); v.pause(); v.controls = true;
+    });
+  }
 })();
