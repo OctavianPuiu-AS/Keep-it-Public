@@ -1,0 +1,6 @@
+{
+  "pages": [
+    { "file": "index.html", "title": "Welcome" }
+  ],
+  "keywords": ["capture", "restore", "view", "render", "job", "variants", "profiles", "blender"]
+}
