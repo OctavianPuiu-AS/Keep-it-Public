@@ -112,6 +112,7 @@ figure { margin: 0; }
 
 /* search */
 .search { position: sticky; top: 0; z-index: 5; background: var(--ground); padding: 12px 0 10px; margin: -12px 0 -10px; display: flex; flex-direction: column; gap: 10px; }
+.search.compact .kw, .search.compact .count, .search.compact .results { display: none; }
 .sbox { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--clay); border-radius: 999px; background: var(--card); color: var(--clay); }
 .sbox:focus-within { box-shadow: 0 0 0 3px rgba(158, 83, 48, 0.15); }
 .sbox svg { width: 18px; height: 18px; flex-shrink: 0; }

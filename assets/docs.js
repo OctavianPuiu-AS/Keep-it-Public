@@ -233,6 +233,35 @@
 
     function set(w) { q.value = w; run(); }
 
+    // While you read, the sticky search folds down to just its box, so the
+    // keywords and results don't sit over the page. Only a real scroll
+    // gesture (wheel, touch, scroll keys) folds it -- the jump to a match
+    // after typing is a scroll too, and must not hide what you just asked for.
+    var gesture = 0;  // when the reader last scrolled by hand
+    function hand(e) {
+      if (e && e.target && e.target.closest && e.target.closest('.results')) return;
+      gesture = Date.now();
+    }
+    window.addEventListener('wheel', hand, { passive: true });
+    window.addEventListener('touchmove', hand, { passive: true });
+    window.addEventListener('keydown', function (e) {
+      if (e.target === q) return;
+      if (['PageDown', 'PageUp', 'ArrowDown', 'ArrowUp', ' ', 'End', 'Home'].indexOf(e.key) >= 0) hand(e);
+    });
+    window.addEventListener('scroll', function () {
+      if (host.classList.contains('compact') || Date.now() - gesture > 800) return;
+      if (host.getBoundingClientRect().top > 1) return;  // not stuck to the top yet
+      // fold, and keep the text you are reading where it is
+      var before = host.offsetHeight;
+      host.classList.add('compact');
+      var lost = before - host.offsetHeight;
+      if (lost > 0) window.scrollBy(0, -lost);
+    }, { passive: true });
+    function unfold() { host.classList.remove('compact'); }
+    q.addEventListener('focus', unfold);
+    q.addEventListener('click', unfold);
+    q.addEventListener('input', unfold);
+
     function clearMarks() {
       document.querySelectorAll('main mark').forEach(function (m) {
         var p = m.parentNode;
