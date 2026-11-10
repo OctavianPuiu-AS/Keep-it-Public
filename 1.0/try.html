@@ -20,8 +20,6 @@
   .vp .hint { left: 12px; bottom: 12px; color: var(--soft); }
   .vp #vp-toast { right: 12px; top: 12px; background: var(--clay); border-color: var(--clay); color: var(--card); font-weight: 700; opacity: 0; transform: translateY(-4px); transition: opacity .2s, transform .2s; }
   .vp #vp-toast.show { opacity: 1; transform: none; }
-  .vp #vp-msg { display: none; }
-  .vp.nogl #vp-msg { display: grid; position: absolute; inset: 0; place-items: center; padding: 24px; text-align: center; color: var(--ink); background: var(--card); }
 
   .panels { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
   .panel { border: 1px solid var(--hair); border-radius: 20px; background: var(--card); padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 14px; }
@@ -110,18 +108,17 @@
 
   <section id="try" data-keywords="demo, playground, browser, trial">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Try it</h2><span class="rule"></span></div>
-    <p>A tiny studio scene, running in your browser. It isn’t Blender and it isn’t the add-on — it’s a sketch of how Keep it works, so you can get a feel for it before you install anything.</p>
+    <p>A tiny scene of three cubes, running in your browser. It isn’t Blender and it isn’t the add-on — it’s a sketch of how Keep it works, so you can get a feel for it before you install anything.</p>
   </section>
 
   <section id="playground" data-keywords="capture, restore, latest, view, camera, render, sheet">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Playground</h2><span class="rule"></span></div>
     <div class="play" id="play">
       <div class="vp" id="vp">
-        <canvas id="vp-canvas" tabindex="0" role="img" aria-label="Studio scene with a sphere, a box and a vase. Drag, or use the arrow keys, to orbit."></canvas>
+        <canvas id="vp-canvas" tabindex="0" role="img" aria-label="Scene with a cube, a tower of two cubes and a small block. Drag, or use the arrow keys, to orbit."></canvas>
         <span class="pill" id="vp-view">Three-quarter</span>
         <span class="pill hint">Drag to orbit</span>
         <span class="pill" id="vp-toast" role="status" aria-live="polite"></span>
-        <p id="vp-msg"></p>
       </div>
 
       <div class="panels">
@@ -164,7 +161,7 @@
     <ol class="three">
       <li>
         <h3>Capture a setup</h3>
-        <p>Change a colour, hide the box, swing the light. Then press Capture. The whole look is saved as one card.</p>
+        <p>Change a colour, hide a cube, swing the light. Then press Capture. The whole look is saved as one card.</p>
       </li>
       <li>
         <h3>Restore it</h3>
@@ -176,7 +173,7 @@
       </li>
       <li>
         <h3>Capture only part of it</h3>
-        <p>Turn off some chips under Capture. “Hero sphere” only holds visibility and materials, so restoring it leaves your light and backdrop alone.</p>
+        <p>Turn off some chips under Capture. “Just the tower” only holds visibility and materials, so restoring it leaves your light and backdrop alone.</p>
       </li>
       <li>
         <h3>Save a view</h3>
@@ -210,6 +207,6 @@
 </footer>
 
 <script src="../assets/docs.js?v=2"></script>
-<script src="../assets/try.js?v=1"></script>
+<script src="../assets/try.js?v=2"></script>
 </body>
 </html>
