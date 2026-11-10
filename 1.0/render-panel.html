@@ -39,6 +39,8 @@
       <div class="txt">
         <p>It turns your captures and views into a render queue that runs on its own.</p>
         <p>At the top, <strong>Add Job</strong> creates a render job and <strong>Run All</strong> renders every job. Beside them sit a contact sheet for all jobs at once and a toggle to skip files you’ve already rendered.</p>
+        <p><strong>Skip Existing</strong> — skips shots whose output file is already on disk (matched by name), so a re-run picks up where the last one stopped.</p>
+        <p><strong>Output folder</strong> — the folder icon in the panel header opens the last render’s output folder in your file browser (or the first job’s, before anything has rendered).</p>
         <p>At the bottom, <strong>Export All to Farm File</strong> writes every job into one .blend for rendering elsewhere.</p>
       </div>
       <div class="pics"><img class="ui" src="media/ui/r-panel.png" alt="The Render panel" width="300" loading="lazy"></div>
@@ -115,7 +117,7 @@
         <p><strong>Name</strong> — The filename pattern for each render. Defaults to <code>{capture}_{view}</code>. Press + to insert a token.</p>
         <p><strong>Path</strong> — The folder renders are saved to. Tokens work here too.</p>
       </div>
-      <div class="pics"><img class="ui" src="media/ui/r-output.png" alt="The Output section" width="300" loading="lazy"><div class="aside"><p><strong>Tokens</strong></p><p><code>{capture} {view} {camera} {resolution} {framerate} {framerange} {colorway} {format} {compositor} {identifier} {version} {date_time}</code></p></div></div>
+      <div class="pics"><img class="ui" src="media/ui/r-output.png" alt="The Output section" width="300" loading="lazy"><div class="aside"><p><strong>Tokens</strong></p><p><code>{capture} {view} {camera} {resolution} {framerate} {framerange} {frame} {format} {look} {colorway} {compositor} {identifier} {version} {date_time}</code></p></div></div>
     </div>
     <div class="row">
       <div class="txt">
