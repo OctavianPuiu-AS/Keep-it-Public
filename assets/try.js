@@ -22,7 +22,8 @@
     { n: [0, 0, 1], v: [[1, -1, 1], [-1, -1, 1], [-1, 1, 1], [1, 1, 1]], side: true },
     { n: [0, 0, -1], v: [[-1, -1, -1], [1, -1, -1], [1, 1, -1], [-1, 1, -1]], side: true }
   ];
-  var OUTLINE = '#7E3C27';
+  var OUTLINE = '#9E5330';  // brand 1
+  var SHADE = [158 / 255, 83 / 255, 48 / 255], SHADE_DEEP = [107 / 255, 53 / 255, 41 / 255], TOPLIGHT = [249 / 255, 244 / 255, 240 / 255];
 
   function camPos(d) {
     var a = d.az * Math.PI / 180, e = d.el * Math.PI / 180;
@@ -78,8 +79,8 @@
         g.strokeStyle = colour; g.lineWidth = lw;
         g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke();
       };
-      axis([-30, 0, 0], [30, 0, 0], 'rgba(196, 92, 84, 0.6)');
-      axis([0, 0, -30], [0, 0, 30], 'rgba(132, 160, 84, 0.7)');
+      axis([-30, 0, 0], [30, 0, 0], 'rgba(176, 82, 63, 0.55)');
+      axis([0, 0, -30], [0, 0, 30], 'rgba(122, 138, 92, 0.6)');
     }
 
     var boxes = CUBES.map(function (cb, i) {
@@ -96,7 +97,7 @@
     }).filter(Boolean);
 
     // flat shadows first, all one colour so overlaps never double up
-    g.fillStyle = css(mix3(d.w, dark ? [0, 0, 0] : [0.62, 0.33, 0.19], dark ? 0.35 : 0.2 + 0.08 * d.lp));
+    g.fillStyle = css(mix3(d.w, dark ? [0, 0, 0] : [225 / 255, 196 / 255, 174 / 255], dark ? 0.35 : 0.45 + 0.2 * d.lp));
     boxes.forEach(function (bx) {
       var pts = [];
       [-1, 1].forEach(function (x) { [-1, 1].forEach(function (y) { [-1, 1].forEach(function (z) {
@@ -109,7 +110,7 @@
 
     // boxes far to near; a box's own visible faces never overlap each other
     boxes.sort(function (p, q) { return dot(sub(q.c, cp), sub(q.c, cp)) - dot(sub(p.c, cp), sub(p.c, cp)); });
-    var tint = mix3([1, 1, 1], lc, 0.55);
+    var tint = mix3([1, 1, 1], lc, 0.35);
     g.lineJoin = 'round'; g.lineCap = 'round';
     boxes.forEach(function (bx) {
       var base = [d.cS, d.cB, d.cV][bx.i];
@@ -118,13 +119,15 @@
         var mid = [(v[0][0] + v[2][0]) / 2, (v[0][1] + v[2][1]) / 2, (v[0][2] + v[2][2]) / 2];
         if (dot(n, sub(cp, mid)) <= 0) return;
         var lam = dot(n, L);
-        var band = lam > 0.55 ? 1 : lam > 0.2 ? 0.87 : 0.74;
-        var k = 1 - (1 - band) * (0.7 + 0.3 * d.lp);
-        var col = [base[0] * k * tint[0], base[1] * k * tint[1], base[2] * k * tint[2]];
-        if (f.n[1] === 1) col = mix3(col, [1, 1, 1], 0.12 * d.lp);
+        var lum = dot(base, [0.3, 0.55, 0.15]);
+        var toward = lum > 0.5 ? SHADE : SHADE_DEEP;
+        var amt = (lam > 0.55 ? 0 : lam > 0.2 ? 0.42 : 0.85) * (0.75 + 0.25 * d.lp) * (lum > 0.5 ? 1 : 0.55);
+        var col = mix3(base, toward, amt);
+        if (f.n[1] === 1) col = mix3(base, TOPLIGHT, (lum > 0.5 ? 0.55 : 0.25) * (0.6 + 0.4 * d.lp));
+        col = [col[0] * tint[0], col[1] * tint[1], col[2] * tint[2]];
         var pts = v.map(proj);
         poly(pts); g.fillStyle = css(col); g.fill();
-        g.strokeStyle = dark ? '#C9A48A' : OUTLINE; g.lineWidth = lw; g.stroke();
+        g.strokeStyle = dark ? '#E1C4AE' : OUTLINE; g.lineWidth = lw; g.stroke();
         if (bx.cb.seam && f.side) { // the tower is two stacked cubes
           var m0 = proj(mix3(v[0], v[3], 0.5)), m1 = proj(mix3(v[1], v[2], 0.5));
           g.beginPath(); g.moveTo(m0[0], m0[1]); g.lineTo(m1[0], m1[1]); g.stroke();
@@ -138,7 +141,7 @@
       if (sc[2] > 0.3) {
         var S = scr(sc), E = proj([sp[0] - L[0] * 1.1, sp[1] - L[1] * 1.1, sp[2] - L[2] * 1.1]);
         var r = 5 * lw;
-        g.strokeStyle = dark ? 'rgba(232, 200, 170, 0.8)' : 'rgba(126, 60, 39, 0.65)'; g.lineWidth = lw;
+        g.strokeStyle = dark ? 'rgba(225, 196, 174, 0.8)' : 'rgba(158, 83, 48, 0.6)'; g.lineWidth = lw;
         g.setLineDash([3 * lw, 3 * lw]);
         g.beginPath(); g.moveTo(S[0], S[1]); g.lineTo(E[0], E[1]); g.stroke();
         g.setLineDash([]);
@@ -154,8 +157,8 @@
 
   /* ---------- data ---------- */
   var OBJECTS = [{ k: 'cube', name: 'Cube' }, { k: 'tower', name: 'Tower' }, { k: 'block', name: 'Block' }];
-  var MATS = [['Paper', '#F7EEE4'], ['Sand', '#E6C9AE'], ['Clay', '#C27A52'], ['Cocoa', '#7A5443'], ['Sage', '#BCC6A6'], ['Mist', '#C7D1DA']];
-  var WORLDS = [['Cream', '#F2EBE3'], ['Linen', '#EADBCB'], ['Fog', '#E1E4E3'], ['Night', '#3A3634']];
+  var MATS = [['Paper', '#F9F4F0'], ['Sand', '#E1C4AE'], ['Apricot', '#DDA46F'], ['Clay', '#9E5330'], ['Cocoa', '#6B3529'], ['Stone', '#95866F']];
+  var WORLDS = [['Cream', '#F4EEE7'], ['Linen', '#F9F4F0'], ['Stone', '#D7D2CB'], ['Night', '#4E4B48']];
   var CATS = [{ k: 'vis', label: 'Visibility' }, { k: 'col', label: 'Materials' }, { k: 'light', label: 'Lights' }, { k: 'world', label: 'World' }];
 
   function clone(o) { return JSON.parse(JSON.stringify(o)); }
@@ -169,9 +172,9 @@
 
   var BASE = {
     vis: [1, 1, 1],
-    col: { cube: '#F7EEE4', tower: '#E6C9AE', block: '#C27A52' },
-    light: { angle: -35, warm: 0.7, power: 1 },
-    world: '#F2EBE3'
+    col: { cube: '#F9F4F0', tower: '#E1C4AE', block: '#DDA46F' },
+    light: { angle: -35, warm: 0.6, power: 1 },
+    world: '#F4EEE7'
   };
   var state = clone(BASE);
 
@@ -187,11 +190,11 @@
 
   var caps = [
     { id: 1, name: 'Warm paper', data: pick(BASE, ['vis', 'col', 'light', 'world']) },
-    { id: 2, name: 'Cool mist', data: {
-      vis: [1, 1, 1], col: { cube: '#C7D1DA', tower: '#F7EEE4', block: '#7A5443' },
-      light: { angle: 55, warm: 0.15, power: 0.85 }, world: '#E1E4E3' } },
+    { id: 2, name: 'Stone dusk', data: {
+      vis: [1, 1, 1], col: { cube: '#95866F', tower: '#F9F4F0', block: '#6B3529' },
+      light: { angle: 55, warm: 0.3, power: 0.85 }, world: '#D7D2CB' } },
     { id: 3, name: 'Just the tower', data: {
-      vis: [0, 1, 0], col: { cube: '#F7EEE4', tower: '#C27A52', block: '#C27A52' } } }
+      vis: [0, 1, 0], col: { cube: '#F9F4F0', tower: '#9E5330', block: '#9E5330' } } }
   ];
   var nextId = 4, capCount = caps.length;
   var active = 1, latest = null;
@@ -410,7 +413,9 @@
     if (!b) return;
     if (b.dataset.view) {
       curView = +b.dataset.view;
-      cam = clone(views[curView]);
+      var to = clone(views[curView]);
+      to.az += 360 * Math.round((cam.az - to.az) / 360);
+      cam = to;
       drawViews(); go(650);
     } else if (b.dataset.vdel) {
       var i = +b.dataset.vdel;
@@ -421,7 +426,7 @@
   });
   $('#saveview').addEventListener('click', function () {
     viewCount++;
-    var v = { name: 'View ' + viewCount, az: Math.round(cam.az), el: Math.round(cam.el), dist: cam.dist };
+    var v = { name: 'View ' + viewCount, az: Math.round(((cam.az % 360) + 540) % 360 - 180), el: Math.round(cam.el), dist: cam.dist };
     views.push(v);
     curView = views.length - 1;
     drawViews(); drawSheetTable();
@@ -429,8 +434,8 @@
   });
 
   function orbit(dAz, dEl) {
-    cam.az = Math.max(-75, Math.min(75, cam.az + dAz));
-    cam.el = Math.max(2, Math.min(70, cam.el + dEl));
+    cam.az = cam.az + dAz;  // no limit: turn all the way round
+    cam.el = Math.max(2, Math.min(85, cam.el + dEl));
     if (curView >= 0) { curView = -1; drawViews(); }
     go(0);
   }
