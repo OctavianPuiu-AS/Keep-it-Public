@@ -102,6 +102,29 @@ footer { max-width: 760px; margin: 56px auto 0; padding-top: 16px; border-top: 1
   .banner .mark { order: -1; }
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+/* search */
+.search { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 0; z-index: 5; background: var(--ground); padding: 10px 0; margin: -10px 0; }
+.sbox { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--clay); border-radius: 999px; background: var(--card); color: var(--clay); }
+.sbox:focus-within { box-shadow: 0 0 0 3px rgba(158, 83, 48, 0.15); }
+.sbox svg { width: 18px; height: 18px; flex-shrink: 0; }
+.sbox input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font: inherit; color: var(--ink); }
+.sbox input::placeholder { color: var(--soft); }
+.sbox input::-webkit-search-cancel-button { filter: sepia(1) saturate(3) hue-rotate(-20deg); }
+kbd { font: 700 12px/1 var(--font); color: var(--soft); border: 1px solid var(--hair); border-radius: 6px; padding: 4px 7px; }
+.kw { display: flex; flex-wrap: wrap; gap: 6px; }
+.kw button { font: 500 13px/1 var(--font); color: var(--clay); background: transparent; border: 1px solid var(--hair); border-radius: 999px; padding: 6px 12px; cursor: pointer; }
+.kw button:hover { border-color: var(--clay); }
+.kw button[aria-pressed="true"] { background: var(--clay); border-color: var(--clay); color: var(--card); }
+.kw button:focus-visible { outline: 1px solid var(--clay); outline-offset: 2px; }
+.count { font-size: 14px; color: var(--soft); min-height: 0; }
+.count:empty { display: none; }
+mark { background: rgba(158, 83, 48, 0.18); color: inherit; border-radius: 3px; padding: 0 1px; }
+section.miss { display: none; }
+.three li.miss { display: none; }
+.tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.tags button { font: 500 12px/1 var(--font); color: var(--soft); background: transparent; border: 1px solid var(--hair); border-radius: 999px; padding: 4px 10px; cursor: pointer; }
+.tags button:hover { color: var(--clay); border-color: var(--clay); }
 </style>
 </head>
 <body>
@@ -128,7 +151,17 @@ footer { max-width: 760px; margin: 56px auto 0; padding-top: 16px; border-top: 1
     </ul>
   </nav>
 
-  <section>
+  <div class="search" role="search">
+    <label class="sbox">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M13 13l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      <input id="q" type="search" placeholder="Search the docs" autocomplete="off" aria-label="Search the docs">
+      <kbd>/</kbd>
+    </label>
+    <div class="kw" id="kw" aria-label="Keywords"></div>
+    <p class="count" id="count" aria-live="polite"></p>
+  </div>
+
+  <section id="welcome" data-keywords="intro, thanks, discord, support">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Welcome!</h2><span class="rule"></span></div>
     <p>Thank you for choosing Keep it. It means a lot and I genuinely hope it makes your work faster and a little more fun.</p>
     <p>Keep it started as a tool I wished I had: a way to save a scene exactly as it is, keep the looks and angles I liked, and render them all in one go without losing anything. This documentation covers it all, step by step. Dive in whenever you're ready.</p>
@@ -136,14 +169,14 @@ footer { max-width: 760px; margin: 56px auto 0; padding-top: 16px; border-top: 1
     <p class="note">Want to keep in touch? Come say hi on our <a href="#discord">Discord</a> server. Ask questions, or suggest features.</p>
   </section>
 
-  <section>
+  <section id="what" data-keywords="overview, captures, views, variants, profiles, batch render">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>What is Keep it?</h2><span class="rule"></span></div>
     <p>Keep it is a scene-state and batch-render tool for Blender. Instead of manually toggling lights, swapping materials, and hiding objects every time you want a different version of your scene, you save each version once — then bring any of them back with a single click, or render every combination automatically.</p>
     <p>You define your scene variations once (captures), your camera angles once (views), and your technical output requirements once (variants and profiles) — then Keep it handles every combination.</p>
     <figure class="shot">Video: Keep it 1.0 — Official Release</figure>
   </section>
 
-  <section>
+  <section id="basics" data-keywords="capture, restore, view, camera, render, job">
     <p>Keep it does three main things:</p>
     <ol class="three">
       <li>
@@ -164,7 +197,7 @@ footer { max-width: 760px; margin: 56px auto 0; padding-top: 16px; border-top: 1
     </ol>
   </section>
 
-  <section>
+  <section id="disclaimer" data-keywords="limits, backup, geometry, animation">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Disclaimer</h2><span class="rule"></span></div>
     <div class="card">
       <p>Keep it is a scene-state capture/restore and batch-render tool. To use it safely and set the right expectations, here's what it deliberately does <strong>not</strong> do.</p>
@@ -176,7 +209,7 @@ footer { max-width: 760px; margin: 56px auto 0; padding-top: 16px; border-top: 1
     </div>
   </section>
 
-  <section>
+  <section id="versions" data-keywords="blender, compatibility, requirements">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Supported versions</h2><span class="rule"></span></div>
     <p>Keep it requires <strong>Blender 5.0 or newer</strong>, and is tested against:</p>
     <div class="versions"><span>5.0</span><span>5.1</span><span>5.2</span><span>5.3</span></div>
@@ -188,5 +221,134 @@ footer { max-width: 760px; margin: 56px auto 0; padding-top: 16px; border-top: 1
   <a href="https://alalongstudio.com">Alalong Studio</a>
 </footer>
 
+<script>
+(function () {
+  var q = document.getElementById('q');
+  var kwBox = document.getElementById('kw');
+  var count = document.getElementById('count');
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section'));
+  var active = null;
+
+  // keywords: shown under each section, and the most common ones as chips under the search box
+  var all = {};
+  sections.forEach(function (s) {
+    var words = (s.dataset.keywords || '').split(',').map(function (w) { return w.trim(); }).filter(Boolean);
+    if (!words.length) return;
+    var row = document.createElement('div');
+    row.className = 'tags';
+    words.forEach(function (w) {
+      all[w] = (all[w] || 0) + 1;
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = w;
+      b.addEventListener('click', function () { pick(w); q.scrollIntoView({ block: 'start' }); });
+      row.appendChild(b);
+    });
+    s.appendChild(row);
+  });
+  ['capture', 'restore', 'view', 'render', 'job', 'variants', 'profiles', 'blender'].forEach(function (w) {
+    var b = document.createElement('button');
+    b.type = 'button'; b.textContent = w; b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () { pick(active === w ? '' : w); });
+    kwBox.appendChild(b);
+  });
+
+  function pick(w) {
+    active = w || null;
+    q.value = w;
+    run();
+  }
+
+  function clearMarks() {
+    document.querySelectorAll('main mark').forEach(function (m) {
+      var p = m.parentNode;
+      p.replaceChild(document.createTextNode(m.textContent), m);
+      p.normalize();
+    });
+  }
+
+  function highlight(root, term) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (n) {
+        if (!n.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
+        if (n.parentNode.closest('.tags, button, script')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [], n, hits = 0;
+    while ((n = walker.nextNode())) nodes.push(n);
+    var lower = term.toLowerCase();
+    nodes.forEach(function (node) {
+      var text = node.nodeValue, low = text.toLowerCase(), i = low.indexOf(lower);
+      if (i < 0) return;
+      var frag = document.createDocumentFragment(), last = 0;
+      while (i >= 0) {
+        frag.appendChild(document.createTextNode(text.slice(last, i)));
+        var m = document.createElement('mark');
+        m.textContent = text.slice(i, i + term.length);
+        frag.appendChild(m);
+        hits++;
+        last = i + term.length;
+        i = low.indexOf(lower, last);
+      }
+      frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+    return hits;
+  }
+
+  function run() {
+    var term = q.value.trim();
+    clearMarks();
+    kwBox.querySelectorAll('button').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.textContent === term));
+    });
+    if (term !== active) active = null;
+    var items = document.querySelectorAll('.three li');
+    if (term.length < 2) {
+      sections.forEach(function (s) { s.classList.remove('miss'); });
+      items.forEach(function (li) { li.classList.remove('miss'); });
+      count.textContent = '';
+      return;
+    }
+    var low = term.toLowerCase(), total = 0, shown = 0;
+    sections.forEach(function (s) {
+      var kws = (s.dataset.keywords || '').toLowerCase();
+      var inText = s.textContent.toLowerCase().indexOf(low) >= 0;
+      var hit = inText || kws.indexOf(low) >= 0;
+      s.classList.toggle('miss', !hit);
+      if (hit) { shown++; total += highlight(s, term); }
+    });
+    // inside the three-things list, keep only the items that match (unless the intro line matched)
+    items.forEach(function (li) {
+      var sec = li.closest('section');
+      var introHit = sec.querySelector('p').textContent.toLowerCase().indexOf(low) >= 0;
+      li.classList.toggle('miss', !introHit && li.textContent.toLowerCase().indexOf(low) < 0
+        && (sec.dataset.keywords || '').toLowerCase().indexOf(low) < 0);
+    });
+    count.textContent = shown
+      ? shown + (shown === 1 ? ' section' : ' sections') + (total ? ', ' + total + (total === 1 ? ' match' : ' matches') : '')
+      : 'Nothing found for "' + term + '". Try a keyword below the search box.';
+    var first = document.querySelector('main mark');
+    if (first && q === document.activeElement) {} // don't jump while typing
+  }
+
+  var t;
+  q.addEventListener('input', function () { clearTimeout(t); t = setTimeout(run, 120); });
+  q.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var first = document.querySelector('main section:not(.miss) mark');
+      if (first) first.scrollIntoView({ block: 'center' });
+    }
+    if (e.key === 'Escape') { pick(''); q.blur(); }
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === '/' && document.activeElement !== q) { e.preventDefault(); q.focus(); }
+  });
+
+  // ?q=word in the address opens the page already searched
+  var start = new URLSearchParams(location.search).get('q');
+  if (start) { q.value = start; run(); }
+})();
+</script>
 </body>
 </html>
