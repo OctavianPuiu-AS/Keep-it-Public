@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=7">
+<link rel="stylesheet" href="../assets/docs.css?v=10">
 </head>
 <body data-version="1.0" data-page="capture-settings.html">
 
@@ -33,7 +33,28 @@
   <p class="oldver" id="oldver"></p>
   <div id="search"></div>
 
-  <p class="soon">This page is being written. Until it’s here, ask on <a href="https://discord.gg/5cbYAySgD" target="_blank" rel="noopener">Discord</a>.</p>
+  <section id="settings" data-keywords="settings, preview, thumbnail, hide new, keep deleted, recreate lights, membership, third-party">
+    <div class="sec"><h2>Capture Settings</h2><span class="rule"></span></div>
+    <p>The gear at the top of the panel opens the restore and capture options (Recreate Lights, Hide New, Keep Deleted, and more).</p>
+    <div class="row">
+      <div class="txt">
+        <h3>Thumbnails</h3>
+        <p><strong>Auto Preview</strong> — Takes a viewport thumbnail for every capture.</p>
+        <p><strong>Rendered Preview</strong> — Renders a 512×512 preview with your engine in the background.</p>
+        <p><strong>Preview Zoom</strong> — How tightly the thumbnail crops. 1.0 is the whole viewport.</p>
+        <h3>Restore</h3>
+        <p><strong>Recreate Lights</strong> — Brings back lights deleted since the capture.</p>
+        <p><strong>Keep Deleted</strong> — Brings back any deleted object the capture still holds.</p>
+        <p><strong>Object Membership</strong> — Also restores which collection each object belongs to, moving objects to match.</p>
+        <p><strong>Hide New</strong> — Objects created since the capture are hidden in a “KeepIt Hidden” collection instead of deleted.</p>
+        <p><strong>Rebuild Undefined Node Setups</strong> — For nodes Blender can’t recreate, usually from a missing add-on. Off, they’re left alone and restore stays fast. On, everything around them is rebuilt — slower.</p>
+        <h3>Other</h3>
+        <p><strong>Unsaved-Changes Indicator</strong> — Warns when the scene has drifted from what was last applied.</p>
+        <p><strong>Capture Third-Party Engine Settings <em>(experimental)</em></strong> — Captures settings from engines like V-Ray and Octane.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/settings.png" alt="The Capture Settings popover" width="300" loading="lazy"></div>
+    </div>
+  </section>
 </main>
 </div>
 
