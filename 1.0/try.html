@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=4">
+<link rel="stylesheet" href="../assets/docs.css?v=5">
 <style>
   .play, .stage { display: flex; flex-direction: column; gap: 16px; }
   .vp { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: #F2EBE3; isolation: isolate; }
@@ -75,7 +75,7 @@
 
   .sheetbar { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; }
   #prog { font-size: 14px; color: var(--soft); font-variant-numeric: tabular-nums; }
-  .sheet-wrap { overflow-x: auto; border: 1px solid var(--hair); border-radius: 20px; background: var(--card); padding: 14px; transition: opacity .2s; }
+  .sheet-wrap { overflow-x: auto; border: 1px solid var(--clay); border-radius: 20px; background: var(--card); padding: 14px; transition: opacity .2s; }
   .sheet-wrap.stale { opacity: 0.5; }
   .sheet { display: grid; grid-template-columns: 112px repeat(var(--cols, 4), minmax(110px, 1fr)); gap: 8px; min-width: 540px; }
   .sheet .lab { font-size: 13px; font-weight: 700; line-height: 1.25; }
@@ -86,7 +86,7 @@
 
   @media (max-width: 640px) {
     .panels { grid-template-columns: minmax(0, 1fr); }
-    .vp { position: sticky; top: 8px; z-index: 4; border-radius: 16px; box-shadow: 0 -10px 0 2px var(--ground), 0 10px 18px -12px rgba(78, 75, 72, 0.45); }
+    .vp { position: sticky; top: 8px; z-index: 4; border-radius: 16px; box-shadow: 0 -10px 0 2px var(--ground), 5px 5px 0 -1px var(--ground), 5px 5px 0 0 var(--clay); }
     .vp .pill { font-size: 12px; }
     .panel { padding: 14px 14px 16px; border-radius: 16px; }
     .obj { grid-template-columns: 36px 50px minmax(0, 1fr); }
@@ -135,7 +135,7 @@
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Playground</h2><span class="rule"></span></div>
     <div class="play" id="play">
       <div class="stage">
-      <div class="vp" id="vp">
+      <div class="vp dbl" id="vp">
         <canvas id="vp-canvas" tabindex="0" role="img" aria-label="Scene with a cube, a tower of two cubes and a small block. Drag, or use the arrow keys, to orbit."></canvas>
         <span class="pill" id="vp-view">Three-quarter</span>
         <span class="pill hint">Drag to orbit</span>
@@ -145,7 +145,7 @@
       <div class="panels">
         <div class="panel" id="scene"></div>
 
-        <div class="panel ki">
+        <div class="panel ki dbl">
           <h3>Keep it</h3>
           <div class="grp">
             <span class="glab">Capture</span>
@@ -174,7 +174,7 @@
         <button type="button" class="btn ghost" id="savepng" disabled>Save PNG</button>
         <span id="prog" aria-live="polite"></span>
       </div>
-      <div class="sheet-wrap" id="sheet-wrap" hidden><div class="sheet" id="sheet"></div></div>
+      <div class="sheet-wrap dbl" id="sheet-wrap" hidden><div class="sheet" id="sheet"></div></div>
     </div>
   </section>
 

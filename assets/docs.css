@@ -128,6 +128,9 @@ kbd { font: 700 12px/1 var(--font); color: var(--soft); border: 1px solid var(--
 mark { background: rgba(158, 83, 48, 0.18); color: inherit; border-radius: 3px; padding: 0 1px; }
 section.miss, .three li.miss { display: none; }
 
+/* the Alalong double contour: a second clay outline offset behind the box */
+.banner, .card, .note, .shot.media, .results, .dbl { box-shadow: 5px 5px 0 -1px var(--ground), 5px 5px 0 0 var(--clay); }
+
 footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 1px solid var(--hair); font-size: 14px; color: var(--soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 
 /* phone / narrow: contents fold into a box above the page */
