@@ -8,14 +8,15 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=2">
+<link rel="stylesheet" href="../assets/docs.css?v=3">
 <style>
-  .play { display: flex; flex-direction: column; gap: 16px; }
-  .vp { position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--clay); border-radius: 20px; overflow: hidden; background: var(--hair); }
+  .play, .stage { display: flex; flex-direction: column; gap: 16px; }
+  .vp { position: relative; aspect-ratio: 16 / 9; border-radius: 20px; overflow: hidden; background: #F2EBE3; isolation: isolate; }
+  .vp::after { content: ""; position: absolute; inset: 0; border: 1px solid var(--clay); border-radius: inherit; pointer-events: none; z-index: 2; }
   .vp canvas { display: block; width: 100%; height: 100%; cursor: grab; touch-action: pan-y; }
   .vp canvas:active { cursor: grabbing; }
   .vp canvas:focus-visible { outline: 2px solid var(--clay); outline-offset: -4px; }
-  .vp .pill { position: absolute; padding: 3px 11px; border-radius: 999px; background: rgba(252, 249, 247, 0.88); border: 1px solid var(--hair); font-size: 13px; font-weight: 500; color: var(--ink); pointer-events: none; }
+  .vp .pill { position: absolute; z-index: 3; padding: 3px 11px; border-radius: 999px; background: rgba(252, 249, 247, 0.88); border: 1px solid var(--hair); font-size: 13px; font-weight: 500; color: var(--ink); pointer-events: none; }
   .vp #vp-view { left: 12px; top: 12px; font-weight: 700; color: var(--clay); }
   .vp .hint { left: 12px; bottom: 12px; color: var(--soft); }
   .vp #vp-toast { right: 12px; top: 12px; background: var(--clay); border-color: var(--clay); color: var(--card); font-weight: 700; opacity: 0; transform: translateY(-4px); transition: opacity .2s, transform .2s; }
@@ -83,7 +84,28 @@
   .sheet .cell { aspect-ratio: 16 / 9; border-radius: 10px; background: var(--hair); overflow: hidden; }
   .sheet .cell img { display: block; width: 100%; height: 100%; object-fit: cover; }
 
-  @media (max-width: 640px) { .panels { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 640px) {
+    .panels { grid-template-columns: minmax(0, 1fr); }
+    .vp { position: sticky; top: 8px; z-index: 4; border-radius: 16px; box-shadow: 0 -10px 0 2px var(--ground), 0 10px 18px -12px rgba(78, 75, 72, 0.45); }
+    .vp .pill { font-size: 12px; }
+    .panel { padding: 14px 14px 16px; border-radius: 16px; }
+    .obj { grid-template-columns: 36px 50px minmax(0, 1fr); }
+    .eye { width: 36px; height: 36px; }
+    .sw { gap: 7px; }
+    .sw button { width: 26px; height: 26px; }
+    .sl { grid-template-columns: 60px minmax(0, 1fr); min-height: 36px; }
+    .sl input { height: 28px; }
+    .btn { padding: 12px 18px; }
+    .chip { padding: 9px 13px; font-size: 14px; }
+    .mini { padding: 8px 11px; }
+    .mini.x { padding: 6px 10px; font-size: 18px; }
+    .capin input { padding: 10px 14px; font-size: 16px; }
+    .cap-main { grid-template-columns: 84px minmax(0, 1fr); padding: 8px; }
+    .cap-main img { width: 84px; }
+    .sheet-wrap { padding: 10px; border-radius: 16px; }
+    .sheet { grid-template-columns: 70px repeat(var(--cols, 4), 120px); gap: 6px; min-width: 0; width: max-content; }
+    .sheet .lab { font-size: 12px; }
+  }
 </style>
 </head>
 <body data-version="1.0" data-page="try.html">
@@ -114,6 +136,7 @@
   <section id="playground" data-keywords="capture, restore, latest, view, camera, render, sheet">
     <div class="sec"><span class="marker" aria-hidden="true"><i></i><b></b></span><h2>Playground</h2><span class="rule"></span></div>
     <div class="play" id="play">
+      <div class="stage">
       <div class="vp" id="vp">
         <canvas id="vp-canvas" tabindex="0" role="img" aria-label="Scene with a cube, a tower of two cubes and a small block. Drag, or use the arrow keys, to orbit."></canvas>
         <span class="pill" id="vp-view">Three-quarter</span>
@@ -145,6 +168,7 @@
             <div class="btns"><button type="button" class="btn ghost" id="saveview">Save view</button></div>
           </div>
         </div>
+      </div>
       </div>
 
       <div class="sheetbar">
@@ -206,7 +230,7 @@
   <a href="https://alalongstudio.com">Alalong Studio</a>
 </footer>
 
-<script src="../assets/docs.js?v=2"></script>
-<script src="../assets/try.js?v=2"></script>
+<script src="../assets/docs.js?v=3"></script>
+<script src="../assets/try.js?v=3"></script>
 </body>
 </html>

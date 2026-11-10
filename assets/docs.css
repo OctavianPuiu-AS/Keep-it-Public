@@ -141,6 +141,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   .side-toggle { display: flex; justify-content: space-between; align-items: center; width: 100%; font: 700 14px var(--font); color: var(--clay); background: none; border: 0; padding: 0; cursor: pointer; }
   .side .body { display: none; flex-direction: column; gap: 18px; margin-top: 12px; }
   .side.open .body { display: flex; }
+  .search { position: static; margin: 0; padding: 0; }
 }
 @media (min-width: 901px) { .side .body { display: flex; flex-direction: column; gap: 18px; } }
 @media (max-width: 640px) {

@@ -65,18 +65,21 @@
     var dark = dot(d.w, [0.3, 0.5, 0.2]) < 0.35;
     var L = lightDir(d.la), lc = lightColor(d.lw);
 
-    if (overlays) { // Blender's green floor axis, clipped at the camera
-      var a = cam([0, 0, -30]), b = cam([0, 0, 30]), near = 0.15;
-      if (a[2] < near || b[2] < near) {
-        var t = (near - a[2]) / (b[2] - a[2]);
-        var c = [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, near];
-        if (a[2] < near) a = c; else b = c;
-      }
-      if (a[2] >= near && b[2] >= near) {
+    if (overlays) { // Blender's floor axes: X red, Y green; clipped at the camera
+      var axis = function (P0, P1, colour) {
+        var a = cam(P0), b = cam(P1), near = 0.15;
+        if (a[2] < near && b[2] < near) return;
+        if (a[2] < near || b[2] < near) {
+          var t = (near - a[2]) / (b[2] - a[2]);
+          var c = [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, near];
+          if (a[2] < near) a = c; else b = c;
+        }
         var A = scr(a), B = scr(b);
-        g.strokeStyle = 'rgba(132, 160, 84, 0.7)'; g.lineWidth = lw;
+        g.strokeStyle = colour; g.lineWidth = lw;
         g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.stroke();
-      }
+      };
+      axis([-30, 0, 0], [30, 0, 0], 'rgba(196, 92, 84, 0.6)');
+      axis([0, 0, -30], [0, 0, 30], 'rgba(132, 160, 84, 0.7)');
     }
 
     var boxes = CUBES.map(function (cb, i) {
@@ -196,6 +199,7 @@
   /* ---------- drawing ---------- */
   var canvas = $('#vp-canvas');
   var ctx = canvas.getContext('2d');
+  var vp = $('#vp');
   var off = document.createElement('canvas');
   off.width = 480; off.height = 270;
   var offCtx = off.getContext('2d');
@@ -222,6 +226,7 @@
       if (k >= 1) anim = null;
     }
     paint(ctx, canvas.width, canvas.height, disp, true);
+    vp.style.backgroundColor = css(disp.w);
     if (anim) request();
   }
   function request() { if (!pending) { pending = true; requestAnimationFrame(frame); } }
@@ -234,9 +239,9 @@
   function shot(st, v) { paint(offCtx, off.width, off.height, toNum(st, v), false); return off.toDataURL('image/png'); }
 
   function size() {
-    var w = canvas.clientWidth, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(2, Math.round(w * dpr));
-    canvas.height = Math.max(2, Math.round(w * 9 / 16 * dpr));
+    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = Math.max(2, Math.round(canvas.clientWidth * dpr));
+    canvas.height = Math.max(2, Math.round(canvas.clientHeight * dpr));
     request();
   }
   if (window.ResizeObserver) new ResizeObserver(size).observe(canvas); else window.addEventListener('resize', size);
@@ -512,6 +517,8 @@
     a.href = c.toDataURL('image/png'); a.download = 'keep-it-sheet.png';
     document.body.appendChild(a); a.click(); a.remove();
   });
+
+  if (window.matchMedia && matchMedia('(hover: none)').matches) $('#vp .hint').textContent = 'Swipe to turn';
 
   /* ---------- start ---------- */
   caps.forEach(function (c) { c.thumb = shot(merge(BASE, c.data), views[1]); });
