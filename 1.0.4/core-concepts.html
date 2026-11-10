@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Core Concepts · Keep it</title>
+<meta name="description" content="Keep it docs: Core Concepts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=11">
+</head>
+<body data-version="1.0.4" data-page="core-concepts.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Core Concepts</h1>
+    <span class="live">1.0.4</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="vocabulary" data-keywords="capture, view, render job, variant, colorway, render profile, cell, glossary">
+    <div class="sec"><h2>The vocabulary</h2><span class="rule"></span></div>
+    <p>Keep it has a small vocabulary. Once these seven ideas click, the whole add-on makes sense.</p>
+    <dl class="terms">
+      <div><dt>Capture</dt><dd>A saved state of your scene — its lights, materials, visibility, world, render settings, and more. You choose which of these <em>categories</em> each capture includes. Restoring a capture brings that state back in one click, without touching anything you didn’t save. Think of captures as the different <em>looks</em> or <em>versions</em> of your scene.</dd></div>
+      <div><dt>View</dt><dd>A saved camera angle and framing — a still shot, or an animated sequence. Views are completely independent from captures, so any view can be combined with any capture. Think of views as the <em>shots</em> you want to see your scene from.</dd></div>
+      <div><dt>Render Job</dt><dd>A pairing of captures with views. Select two captures and two views, and the job becomes four shots (every capture seen through every view). This is where captures and views come together into actual output.</dd></div>
+      <div><dt>Variant</dt><dd>An option that <em>multiplies</em> a job’s output — resolution, file format, frame range, frame rate, colour management, compositor, or material colorway. Add two resolutions to a four-shot job and you get eight renders. Variants let one job cover every technical version you need without building separate jobs.</dd></div>
+      <div><dt>Colorway</dt><dd>A named set of material swaps: on this object, in this slot, use this material instead. Applied before a shot renders and reversed after, so the same capture can render in three fabrics without duplicating anything.</dd></div>
+      <div><dt>Render Profile</dt><dd>A reusable bundle of render settings (engine, sampling, colour management, output format, passes) that you author in Blender’s own Render Properties and assign to a job. Set your quality once, reuse it across every job.</dd></div>
+      <div><dt>Cell</dt><dd>One rendered image: a single capture, seen through a single view, with one combination of variants. A job is a list of shots. The contact sheet shows each one as a <strong>cell</strong> you can preview.</dd></div>
+    </dl>
+  </section>
+  <section id="beyond" data-keywords="scope, exclude, latest">
+    <div class="sec"><h2>Two things worth knowing beyond the core seven</h2><span class="rule"></span></div>
+    <div class="card">
+      <ul>
+        <li><strong>Scope</strong> — a capture doesn’t have to cover the whole scene. You can <em>scope</em> it to the selected objects, a chosen list of objects, or specific collections — or invert that with <strong>Exclude</strong>, capturing everything else instead. It only saves and restores that part.</li>
+        <li><strong>Latest</strong> — before you browse away from unsaved work, Keep it automatically tucks the live scene into a “Latest” slot, so you can always click back to exactly where you were.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=6"></script>
+</body>
+</html>

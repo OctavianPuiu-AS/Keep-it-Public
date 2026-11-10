@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Main panel · Keep it</title>
+<meta name="description" content="Keep it docs: Main panel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=11">
+</head>
+<body data-version="1.0.4" data-page="main-panel.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Main panel</h1>
+    <span class="live">1.0.4</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <div class="kids" id="kids"></div>
+  <section id="overview" data-keywords="keep it, capture, restore, thumbnail, name">
+    <div class="sec"><h2>Overview</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Keep it</strong> — Press it to take a capture of the current scene state across all enabled categories. The thumbnail is captured automatically from the viewport.</p>
+        <p><strong>Restore</strong> — Click the big thumbnail. The capture is applied through the categories that are currently switched on, so switching one off leaves that part of the scene alone. It also switches the camera to the view the capture was taken on, and leaves the timeline on the frame you are on.</p>
+        <p><strong>Name field</strong> — Each capture has an editable name. Rename it directly in the field below the thumbnail.</p>
+        <p><strong>Icons</strong> — The bottom row of icons shows what data the current capture has.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/panel.png" alt="The Keep it main panel" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="gallery" data-keywords="gallery, tooltip, browse">
+    <div class="sec"><h2>Thumbnail gallery</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>Your captures are displayed as a browsable image picker. Click through them to select one. You can also step forward and backward with the arrow buttons flanking the name field.</p>
+        <p>Hovering over a capture reveals when it was stored and what it contains.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/gallery.png" alt="Three captures in the gallery" width="340" loading="lazy"><img class="ui" src="media/ui/tooltip.png" alt="Tooltip showing when a capture was stored and its categories" width="340" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="groups" data-keywords="groups, filter, organise">
+    <div class="sec"><h2>Groups</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>Captures can be organised into named groups. A dropdown above the thumbnail lets you filter the gallery by group, keeping large collections manageable.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/groups.png" alt="The group dropdown with Add, Remove, Rename and Move" width="380" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="categories" data-keywords="categories, toggles">
+    <div class="sec"><h2>Category toggles</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>A grid of icon buttons down the left side chooses which parts of the scene your captures include. Only enabled categories are saved when you capture, and only those are restored.</p>
+        <p>What each one stores: <a href="capture-categories.html">Capture Categories</a>. All icons at a glance: <a href="cheat-sheet.html">Cheat Sheet</a>.</p>
+      </div>
+      <div class="pics"><div class="cats" aria-label="Category toggles">
+          <ul class="l"><li>Transforms</li><li>Visibility</li><li>Shader Nodes</li><li>Node Group</li><li>Active Cam.</li><li>Modifier</li></ul>
+          <img class="ui" src="media/ui/categories.png" alt="The twelve category toggle icons" width="60" loading="lazy">
+          <ul class="r"><li>Lights</li><li>World</li><li>Render Prop.</li><li>Compositor</li><li>Custom Prop.</li><li>Drivers</li></ul>
+        </div></div>
+    </div>
+  </section>
+  <section id="buttons" data-keywords="latest, refresh, solo, duplicate, thumbnail, edit, push, lock, delete">
+    <div class="sec"><h2>Buttons</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Latest</strong> — Jumps back to the scene state you were in right before you last restored.</p>
+        <p><strong>Refresh</strong> — Re-applies the currently selected capture to the scene.</p>
+        <p><strong>Solo</strong> — Temporarily hides every object except the ones in the active capture.</p>
+        <p><strong>Duplicate</strong> — Makes a copy of the selected capture.</p>
+        <p><strong>Thumbnail</strong> — Retakes the preview image.</p>
+        <p><strong>Edit</strong> — Click once to restore the capture for editing; click again to save your changes.</p>
+        <p><strong>Push</strong> — Overwrites chosen captures with the current scene state.</p>
+        <p><strong>Lock</strong> — Protects the capture’s data from being changed or deleted.</p>
+        <p><strong>Delete</strong> — Removes the capture.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/actions.png" alt="The column of capture buttons" width="30" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="push" data-keywords="push, override, remove">
+    <div class="sec"><h2>Push</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>Use it when the scene has improved and your captures should catch up. One lighting fix pushed into ten captures, instead of redoing each.</p>
+        <p>It acts only on the categories and scope you have switched on, so everything else stays untouched.</p>
+        <p><strong>Override</strong> — Writes the current scene state into the ticked captures. Whatever those categories held before is replaced.</p>
+        <p><strong>Remove</strong> — Strips those categories back out of the ticked captures.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/push.png" alt="Push to Captures in Override mode" width="300" loading="lazy"><img class="ui" src="media/ui/remove.png" alt="Push to Captures in Remove mode" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="help" data-keywords="help, documentation, bug, diagnostics">
+    <div class="sec"><h2>Help</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Documentation</strong> — Opens this site in your browser.</p>
+        <p><strong>Report a Bug</strong> — Opens a link where you can report a problem.</p>
+        <p><strong>Copy Diagnostics</strong> — Copies a short summary of your setup to the clipboard, ready to paste into a bug report.</p>
+        <p>Below those, a line shows roughly how much space your captures and thumbnails take up in this file.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/help.png" alt="The Help menu" width="300" loading="lazy"></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=6"></script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reporting bugs · Keep it</title>
+<meta name="description" content="Keep it docs: Reporting bugs.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=11">
+</head>
+<body data-version="1.0.4" data-page="reporting-bugs.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Reporting bugs</h1>
+    <span class="live">1.0.4</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="where" data-keywords="report a bug, github, help">
+    <div class="sec"><h2>Where to find it</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>In the <strong>Main panel</strong> (open the N-panel in the 3D Viewport and click the <strong>Keep it</strong> tab), look at the top-right corner of the panel header for the <strong>?</strong> button. Click it and choose <strong>Report a Bug</strong>.</p>
+        <p>This opens a GitHub issue on the public bug tracker in your browser, with your Keep it version, Blender version and OS already filled in.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/panel.png" alt="The Keep it main panel" width="260" loading="lazy"><img class="ui" src="media/ui/help.png" alt="The Help menu with Report a Bug" width="260" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="what" data-keywords="describe, steps, screenshot, diagnostics, submit">
+    <div class="sec"><h2>What to put in it</h2><span class="rule"></span></div>
+    <div class="acc">
+      <details open><summary>Describe the bug clearly</summary><ul>
+        <li><strong>What happened</strong> — what you expected vs. what actually happened.</li>
+        <li><strong>Steps to reproduce</strong> — the exact sequence of actions that triggers it. If you can reliably reproduce it, that’s the single most useful thing you can provide.</li>
+        <li><strong>Which capture/view/job it involves</strong>, if relevant — e.g. “a capture with Modifiers on and Selected scope.”</li>
+      </ul></details>
+      <details><summary>Attach a screenshot or short clip</summary><p>Layout glitches, missing thumbnails or UI issues are much faster to diagnose with a screenshot than a text description.</p></details>
+      <details><summary>Mention your scene setup</summary><p>If the bug only happens with certain data (e.g. a Geometry Nodes modifier, a linked library, a specific render engine), say so — some bugs are Blender-version- or setup-specific.</p></details>
+      <details><summary>Paste your diagnostics</summary><p>In the same <strong>?</strong> menu, press <strong>Copy Diagnostics</strong> and paste the result into the report. It adds what the pre-filled link can’t: how many captures, views and jobs the file has, and which categories the capture in question stores.</p></details>
+      <details><summary>Submit</summary><p>Press <strong>Submit new issue</strong> on GitHub. You need to be logged in to GitHub to submit — no account is needed to read existing issues.</p></details>
+    </div>
+    <p>Thank you!</p>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=6"></script>
+</body>
+</html>
