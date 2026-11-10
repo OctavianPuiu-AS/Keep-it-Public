@@ -155,6 +155,20 @@ ol.steps.big p { margin: 0; }
 .row .pics { display: flex; flex-direction: column; gap: 14px; align-items: center; }
 .row .aside { margin: 0; max-width: 300px; font-size: 14px; color: var(--soft); display: flex; flex-direction: column; gap: 6px; }
 .row .aside p { margin: 0; }
+.tbl { overflow-x: auto; }
+table.kv { border-collapse: collapse; min-width: 100%; }
+table.kv th, table.kv td { padding: 8px 14px; border-bottom: 1px solid rgba(126,60,39,.2); text-align: left; vertical-align: top; }
+table.kv th { font-weight: 600; white-space: nowrap; width: 1%; color: var(--clay); }
+.acc details ul { margin: 0 4px 12px; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+.note.warn, .note.good { text-align: left; }
+.note.warn { background: rgba(176, 64, 48, .10); }
+.note.good { background: rgba(110, 140, 70, .12); }
+img.ui.wide { width: 100%; max-width: 760px; }
+.row + .row { margin-top: 18px; }
+.row .txt ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }
+section > .txt { display: flex; flex-direction: column; gap: 8px; }
+section > .txt p, section > .txt h3 { margin: 0; }
+section > .txt h3 { margin-top: 8px; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--soft); }
 img.ui { height: auto; max-width: 100%; display: block; }
 .cats { display: flex; gap: 12px; align-items: center; }
 .cats ul { list-style: none; margin: 0; padding: 0; font-size: 13.5px; color: var(--soft); }
