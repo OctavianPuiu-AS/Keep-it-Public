@@ -1,14 +1,19 @@
-/* Keep it docs: version picker, contents, search across every page of the version.
-   Each page:  <body data-version="1.0" data-page="index.html">  with
-   <aside class="side" id="side"></aside> and <div id="search"></div> inside <main>.
-   Each version folder has nav.json (its pages + the keyword chips);
-   the site root has versions.json. No build step: add a page, list it in nav.json. */
+/* Keep it docs: version picker, contents, search, previous/next.
+   Two kinds of page:
+   - shared pages at the site root (Welcome, Try it): <body data-root="" data-page="index.html">,
+     listed in /nav.json, the same for every version;
+   - versioned pages in /<ver>/: <body data-version="1.0" data-page="quickstart.html">,
+     listed as a tree in /<ver>/nav.json ({file, title, children}).
+   The site root has versions.json. No build step: add a page, list it in a nav.json. */
 (function () {
   'use strict';
   var body = document.body;
-  var VERSION = body.dataset.version;
+  var VERSION = body.dataset.version || '';
+  var SHARED = !VERSION;
+  var ROOT = body.dataset.root != null ? body.dataset.root : '../';
   var PAGE = body.dataset.page || 'index.html';
-  var ROOT = '../';
+  var HERE = (SHARED ? 's:' : 'v:') + PAGE;
+  var KEY = 'keepit-docs-version';
 
   function el(tag, attrs, kids) {
     var e = document.createElement(tag);
@@ -21,12 +26,14 @@
     return e;
   }
   function getJSON(url) { return fetch(url, { cache: 'no-cache' }).then(function (r) { if (!r.ok) throw r; return r.json(); }); }
-  // nav.json pages form a tree ({file, title, children}); most things want it flat, in reading order
-  function flat(list, depth, parent, out) {
+  function remembered() { try { return localStorage.getItem(KEY); } catch (e) { return null; } }
+  function remember(v) { try { localStorage.setItem(KEY, v); } catch (e) { /* private window */ } }
+  // nav.json pages form a tree; most things want it flat, in reading order
+  function flat(list, depth, out) {
     out = out || [];
     (list || []).forEach(function (p) {
-      out.push({ file: p.file, title: p.title, depth: depth || 0, parent: parent || null, children: p.children || [] });
-      flat(p.children, (depth || 0) + 1, p, out);
+      out.push({ file: p.file, title: p.title, depth: depth || 0, children: p.children || [] });
+      flat(p.children, (depth || 0) + 1, out);
     });
     return out;
   }
@@ -37,53 +44,72 @@
 
   var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
 
-  // per-section keyword tags (read before anything else touches the text)
+  // per-section text for search (read before anything else touches it)
   var localIndex = sections.map(function (s) {
-    return { file: PAGE, id: s.id, heading: sectionTitle(s), text: s.textContent.replace(/\s+/g, ' ').trim(), keywords: s.dataset.keywords || '' };
+    return { id: s.id, heading: sectionTitle(s), text: s.textContent.replace(/\s+/g, ' ').trim(), keywords: s.dataset.keywords || '' };
   });
 
-  Promise.all([getJSON(ROOT + 'versions.json'), getJSON('nav.json')]).then(function (r) {
-    var versions = r[0], nav = r[1];
-    buildSide(versions, nav);
+  if (VERSION) remember(VERSION);
+
+  getJSON(ROOT + 'versions.json').then(function (versions) {
+    var ids = versions.versions.map(function (v) { return v.id; });
+    var mem = remembered();
+    var ver = VERSION || (ids.indexOf(mem) >= 0 ? mem : versions.latest);
+    return Promise.all([versions, ver, getJSON(ROOT + 'nav.json'), getJSON(ROOT + ver + '/nav.json')]);
+  }).then(function (r) {
+    var versions = r[0], ver = r[1], shared = r[2].pages || [], nav = r[3];
+    // every page, in reading order: the shared ones, then the version's tree
+    var all = shared.map(function (p) { return { key: 's:' + p.file, href: ROOT + p.file, title: p.title }; })
+      .concat(flat(nav.pages).map(function (p) { return { key: 'v:' + p.file, href: ROOT + ver + '/' + p.file, title: p.title }; }));
+    buildSide(versions, ver, shared, nav);
     buildKids(nav);
-    buildPager(nav);
-    buildSearch(nav);
+    buildPager(all);
+    buildSearch(nav.keywords || [], all.filter(function (p) { return p.key !== HERE; }));
     oldVersionNote(versions);
   }).catch(function () {
     // offline / opened as a file: the page still reads fine, just without the extras
-    buildSearch({ pages: [{ file: PAGE, title: document.title }], keywords: [] });
+    buildSearch([], []);
   });
 
   /* ---------- contents + version ---------- */
-  function buildSide(versions, nav) {
+  function buildSide(versions, ver, shared, nav) {
     var side = document.getElementById('side');
     if (!side) return;
-    var sel = el('select', { id: 'ver', 'aria-label': 'Documentation version' });
+    var sel = el('select', { id: 'ver', 'aria-label': 'Keep it version' });
     versions.versions.forEach(function (v) {
       var o = el('option', { value: v.id, text: v.id + (v.id === versions.latest ? ' (latest)' : '') });
-      if (v.id === VERSION) o.selected = true;
+      if (v.id === ver) o.selected = true;
       sel.appendChild(o);
     });
     sel.addEventListener('change', function () {
       var to = sel.value;
+      remember(to);
+      if (SHARED) { location.reload(); return; }
       getJSON(ROOT + to + '/nav.json').then(function (n) {
-        var has = flat(n.pages).some(function (p) { return p.file === PAGE; });
-        location.href = ROOT + to + '/' + (has ? PAGE : 'index.html') + (has ? location.hash : '');
+        var pages = flat(n.pages), has = pages.some(function (p) { return p.file === PAGE; });
+        var go = has ? PAGE : (pages[0] ? pages[0].file : '');
+        location.href = ROOT + to + '/' + go + (has ? location.hash : '');
       }).catch(function () { location.href = ROOT + to + '/'; });
+    });
+
+    var common = el('ul');
+    shared.forEach(function (p) {
+      var a = el('a', { href: ROOT + p.file, text: p.title });
+      if (SHARED && p.file === PAGE) a.setAttribute('aria-current', 'page');
+      common.appendChild(el('li', null, [a]));
     });
 
     function tree(list, depth) {
       var ul = el('ul', depth ? { class: 'sub' } : null);
       list.forEach(function (p) {
-        var a = el('a', { href: p.file, text: p.title });
-        if (p.file === PAGE) a.setAttribute('aria-current', 'page');
+        var a = el('a', { href: ROOT + ver + '/' + p.file, text: p.title });
+        if (!SHARED && p.file === PAGE) a.setAttribute('aria-current', 'page');
         var li = el('li', null, [a]);
         if (p.children && p.children.length) li.appendChild(tree(p.children, depth + 1));
         ul.appendChild(li);
       });
       return ul;
     }
-    var pages = tree(nav.pages, 0);
 
     var toc = el('ul', { class: 'toc' });
     sections.forEach(function (s) {
@@ -101,8 +127,9 @@
 
     side.appendChild(toggle);
     side.appendChild(el('div', { class: 'body' }, [
-      el('div', { class: 'ver' }, [el('label', { for: 'ver', text: 'VERSION' }), sel]),
-      el('div', null, [el('h4', { text: 'PAGES' }), pages]),
+      el('div', null, [el('h4', { text: 'KEEP IT' }), common]),
+      el('div', { class: 'ver' }, [el('label', { for: 'ver', text: 'DOCS FOR VERSION' }), sel]),
+      el('div', null, [tree(nav.pages || [], 0)]),
       toc.children.length ? el('div', null, [el('h4', { text: 'ON THIS PAGE' }), toc]) : null
     ]));
 
@@ -122,7 +149,7 @@
   /* ---------- a group page lists what's inside it ---------- */
   function buildKids(nav) {
     var box = document.getElementById('kids');
-    if (!box) return;
+    if (!box || SHARED) return;
     var me = flat(nav.pages).filter(function (p) { return p.file === PAGE; })[0];
     if (!me || !me.children.length) return;
     me.children.forEach(function (c) {
@@ -135,21 +162,21 @@
   }
 
   /* ---------- previous / next, in the order of the contents ---------- */
-  function buildPager(nav) {
+  function buildPager(all) {
     var main = document.querySelector('main');
-    var all = flat(nav.pages), i = -1;
-    all.forEach(function (p, k) { if (p.file === PAGE) i = k; });
+    var i = -1;
+    all.forEach(function (p, k) { if (p.key === HERE) i = k; });
     if (!main || i < 0) return;
     var prev = all[i - 1], next = all[i + 1];
     if (!prev && !next) return;
     var bar = el('nav', { class: 'pager', 'aria-label': 'Previous and next page' });
-    bar.appendChild(prev ? el('a', { href: prev.file, class: 'prev' }, [el('span', { class: 'k', text: 'Previous' }), el('span', { class: 't', text: prev.title })]) : el('span'));
-    bar.appendChild(next ? el('a', { href: next.file, class: 'next' }, [el('span', { class: 'k', text: 'Next' }), el('span', { class: 't', text: next.title })]) : el('span'));
+    bar.appendChild(prev ? el('a', { href: prev.href, class: 'prev' }, [el('span', { class: 'k', text: 'Previous' }), el('span', { class: 't', text: prev.title })]) : el('span'));
+    bar.appendChild(next ? el('a', { href: next.href, class: 'next' }, [el('span', { class: 'k', text: 'Next' }), el('span', { class: 't', text: next.title })]) : el('span'));
     main.appendChild(bar);
   }
 
   function oldVersionNote(versions) {
-    if (VERSION === versions.latest) return;
+    if (SHARED || VERSION === versions.latest) return;
     var box = document.getElementById('oldver');
     if (!box) return;
     box.innerHTML = '';
@@ -158,7 +185,7 @@
   }
 
   /* ---------- search ---------- */
-  function buildSearch(nav) {
+  function buildSearch(keywords, otherPages) {
     var host = document.getElementById('search');
     if (!host) return;
     var q = el('input', { id: 'q', type: 'search', placeholder: 'Search the docs', autocomplete: 'off', 'aria-label': 'Search the docs' });
@@ -172,7 +199,7 @@
     host.setAttribute('role', 'search');
     [box, chips, count, results].forEach(function (n) { host.appendChild(n); });
 
-    (nav.keywords || []).forEach(function (w) {
+    keywords.forEach(function (w) {
       var b = el('button', { type: 'button', 'aria-pressed': 'false', text: w });
       b.addEventListener('click', function () { set(q.value.trim() === w ? '' : w); });
       chips.appendChild(b);
@@ -189,16 +216,15 @@
       s.appendChild(row);
     });
 
-    // the other pages of this version, fetched once when someone first searches
+    // the other pages, fetched once when someone first searches
     var others = null;
     function loadOthers() {
       if (others) return others;
-      var list = flat(nav.pages).filter(function (p) { return p.file !== PAGE; });
-      others = Promise.all(list.map(function (p) {
-        return fetch(p.file).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
+      others = Promise.all(otherPages.map(function (p) {
+        return fetch(p.href).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
           var doc = new DOMParser().parseFromString(html, 'text/html');
           return Array.prototype.map.call(doc.querySelectorAll('main section[id]'), function (s) {
-            return { file: p.file, page: p.title, id: s.id, heading: sectionTitle(s), text: s.textContent.replace(/\s+/g, ' ').trim(), keywords: s.dataset.keywords || '' };
+            return { href: p.href, page: p.title, id: s.id, heading: sectionTitle(s), text: s.textContent.replace(/\s+/g, ' ').trim(), keywords: s.dataset.keywords || '' };
           });
         }).catch(function () { return []; });
       })).then(function (all) { return [].concat.apply([], all); });
@@ -289,7 +315,7 @@
         }
         results.appendChild(el('div', { class: 'head', text: hits.length + (hits.length === 1 ? ' result' : ' results') + ' on other pages' }));
         hits.forEach(function (e) {
-          results.appendChild(el('a', { href: e.file + '?q=' + encodeURIComponent(term) + '#' + e.id }, [
+          results.appendChild(el('a', { href: e.href + '?q=' + encodeURIComponent(term) + '#' + e.id }, [
             el('div', { class: 'where', text: e.page + (e.heading ? '  ›  ' + e.heading : '') }),
             el('div', { class: 'snip', html: snippet(e.text, term) })
           ]));

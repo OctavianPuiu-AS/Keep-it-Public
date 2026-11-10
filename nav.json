@@ -1,0 +1,12 @@
+{
+  "pages": [
+    {
+      "file": "index.html",
+      "title": "Welcome"
+    },
+    {
+      "file": "try.html",
+      "title": "Try it"
+    }
+  ]
+}
