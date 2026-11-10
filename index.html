@@ -22,7 +22,7 @@
   color-scheme: light;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   margin: 0;
   background: var(--ground); color: var(--ink);
@@ -58,7 +58,8 @@ nav a:hover { background: var(--clay); color: var(--card); }
 section { display: flex; flex-direction: column; gap: 14px; }
 .sec { display: flex; align-items: center; gap: 14px; }
 .sec .marker { display: flex; align-items: center; flex-shrink: 0; }
-.sec .marker i { display: block; width: 22px; height: 2px; background: var(--clay); }
+.sec .marker i { display: block; width: 22px; height: 2px; background: var(--clay); position: relative; }
+.sec .marker i::before { content: ""; position: absolute; right: 100%; top: 0; width: 100vw; height: 2px; background: var(--clay); }
 .sec .marker b { display: block; width: 12px; height: 12px; border-radius: 50%; background: var(--clay); }
 h2 { margin: 0; font-size: 22px; font-weight: 700; color: var(--clay); letter-spacing: 0.02em; text-wrap: balance; }
 .sec span.rule { flex: 1; height: 1px; background: var(--clay); opacity: 0.35; }
