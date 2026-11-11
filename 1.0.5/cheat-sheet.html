@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cheat Sheet · Keep it</title>
+<meta name="description" content="Keep it docs: Cheat Sheet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=19">
+</head>
+<body data-version="1.0.5" data-page="cheat-sheet.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Cheat Sheet</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="shortcuts" data-keywords="shortcuts, keys, alt c, alt v">
+    <div class="sec"><h2>Keyboard shortcuts</h2><span class="rule"></span></div>
+    <div class="tbl"><table class="kv">
+      <tr><th scope="row"><kbd>Alt C</kbd></th><td>Keep it (capture)</td></tr>
+      <tr><th scope="row"><kbd>Alt V</kbd></th><td>Add view</td></tr>
+      <tr><th scope="row"><kbd>Alt ←</kbd> / <kbd>Alt →</kbd></th><td>Previous / next capture</td></tr>
+      <tr><th scope="row"><kbd>Alt Ctrl C</kbd></th><td>Solo mode</td></tr>
+      <tr><th scope="row"><kbd>Alt X</kbd></th><td>Toggle Latest</td></tr>
+      <tr><th scope="row"><kbd>Alt E</kbd></th><td>Edit capture</td></tr>
+      <tr><th scope="row"><kbd>Esc</kbd></th><td>Cancel edit</td></tr>
+    </table></div>
+  </section>
+  <section id="categories" data-keywords="categories, transforms, visibility, shader, node groups, camera, modifiers, lights, world, render, compositor, custom properties, drivers">
+    <div class="sec"><h2>Capture categories</h2><span class="rule"></span></div>
+    <dl class="terms">
+      <div><dt>Object Transforms</dt><dd>Stores each object’s location, rotation and scale, plus its shape-key values. On restore they’re written straight back. One of the heavier categories on big scenes, because it touches every object in scope.</dd></div>
+      <div><dt>Visibility &amp; Display</dt><dd>Stores whether each object is hidden in the viewport and in renders, along with its display settings. Also covers collections — their visibility, whether they’re excluded from the view layer, and their colour tag.</dd></div>
+      <div><dt>Shader Nodes</dt><dd>Stores each object’s material slots and rebuilds every material’s node tree on restore. This is the materials category. It does not include the insides of node groups — those are a separate category, because they’re shared. Heavy.</dd></div>
+      <div><dt>Node Group Internals</dt><dd>Stores the internal node tree of every node group and rebuilds them on restore. Node groups are shared data in Blender, so restoring one affects every material and object using it — not only the ones in your scope. Heavy, and the one to be deliberate about.</dd></div>
+      <div><dt>Camera</dt><dd>Stores which camera is active, and whether the viewport is looking through it. Nothing else. The camera’s position, lens and depth of field belong to Views, not captures.</dd></div>
+      <div><dt>Modifiers</dt><dd>Stores each object’s whole modifier stack and its particle systems, and rebuilds them on restore. Heavy.</dd></div>
+      <div><dt>Lights</dt><dd>Stores light data: type, colour, energy, shadow settings, shape, shader nodes and light-linking. Where a light <em>is</em> and whether it’s visible come from Transforms and Visibility instead.</dd></div>
+      <div><dt>World</dt><dd>Stores the world background — colour, environment texture and its shader nodes.</dd></div>
+      <div><dt>Render Properties</dt><dd>Stores render settings: engine, sampling, resolution, colour management and frame range.</dd></div>
+      <div><dt>Compositor Nodes</dt><dd>Stores the scene’s compositing node tree and rebuilds it on restore. Scene-wide — there’s no way to scope it to particular objects. On Blender 5.3 it holds the whole effects stack.</dd></div>
+      <div><dt>Custom Properties</dt><dd>Stores custom properties on objects and collections.</dd></div>
+      <div><dt>Drivers</dt><dd>Stores drivers on objects, lights, cameras, the scene, the world, materials and node groups. Restoring also removes any drivers added since the capture, so the setup matches exactly. Drivers on bones, shape keys and vertex groups are never touched.</dd></div>
+    </dl>
+  </section>
+  <section id="tokens" data-keywords="tokens, naming, filename">
+    <div class="sec"><h2>Naming tokens</h2><span class="rule"></span></div>
+    <div class="tbl"><table class="kv">
+      <tr><th scope="row"><code>{job}</code></th><td>Render job name</td></tr>
+      <tr><th scope="row"><code>{capture}</code></th><td>Capture name</td></tr>
+      <tr><th scope="row"><code>{view}</code></th><td>View name</td></tr>
+      <tr><th scope="row"><code>{camera}</code></th><td>Camera name</td></tr>
+      <tr><th scope="row"><code>{resolution}</code></th><td>e.g. 1920x1080</td></tr>
+      <tr><th scope="row"><code>{framerate}</code></th><td>e.g. 24fps</td></tr>
+      <tr><th scope="row"><code>{framerange}</code></th><td>e.g. 1-250</td></tr>
+      <tr><th scope="row"><code>{frame}</code></th><td>Frame number</td></tr>
+      <tr><th scope="row"><code>{format}</code></th><td>File format</td></tr>
+      <tr><th scope="row"><code>{look}</code></th><td>Colour management look</td></tr>
+      <tr><th scope="row"><code>{colorway}</code></th><td>Colorway name</td></tr>
+      <tr><th scope="row"><code>{compositor}</code></th><td>Compositor node group</td></tr>
+      <tr><th scope="row"><code>{version}</code></th><td>Version number</td></tr>
+      <tr><th scope="row"><code>{identifier}</code></th><td>Prism identifier</td></tr>
+      <tr><th scope="row"><code>{date_time}</code></th><td>Date and time of render</td></tr>
+    </table></div>
+  </section>
+  <section id="buttons" data-keywords="buttons, main panel, views panel, render panel, cell">
+    <div class="sec"><h2>Buttons</h2><span class="rule"></span></div>
+    <div class="acc">
+      <details open><summary>Main panel</summary><ul><li><strong>Latest</strong> — back to the scene as it was before you restored; press again to return to your capture</li><li><strong>Arrange Captures</strong> — drag the captures into a new order</li><li><strong>Refresh</strong> — apply the selected capture again</li><li><strong>Solo Mode</strong> — hide everything except this capture’s objects</li><li><strong>Duplicate</strong> — copy the capture</li><li><strong>Thumbnail</strong> — retake the preview image</li><li><strong>Edit</strong> — restore for editing, click again to save</li><li><strong>Override</strong> — overwrite chosen captures with the current scene</li><li><strong>Lock</strong> — protect the name, data and thumbnail</li><li><strong>Delete</strong> — remove the capture</li></ul></details>
+      <details><summary>Views panel</summary><ul><li><strong>Add / Remove</strong> — add or delete a view</li><li><strong>Go to View</strong> — move the camera there and look through it</li><li><strong>Duplicate</strong> — copy the view</li><li><strong>Save</strong> — write the camera’s current state into the view</li><li><strong>Revert</strong> — discard changes and restore the stored view</li><li><strong>Lock</strong> — refuse Save and Revert</li><li><strong>Select Camera</strong> — select it in the viewport</li><li><strong>Lock Camera to View</strong> — moving the viewport moves the camera</li><li><strong>Duplicate Camera</strong> — copy the camera with all its views</li><li><strong>Delete Camera</strong> — remove the camera and its views</li></ul></details>
+      <details><summary>Render panel</summary><ul><li><strong>Add Job</strong> — create a new render job</li><li><strong>Run All</strong> — render every job’s queue</li><li><strong>Contact Sheet</strong> — grid of every shot across all jobs</li><li><strong>Skip Existing</strong> — don’t re-render files already on disk</li><li><strong>Render Setup</strong> — variants, profile and output for one job</li><li><strong>Render Job</strong> — run this job on its own</li><li><strong>Duplicate Job / Delete Job</strong> — copy or remove a job</li><li><strong>Export All to Farm File</strong> — one .blend with a scene per shot, no Keep it needed</li><li><strong>Output folder</strong> — open it in your file browser</li><li><strong>Render Settings</strong> — render environment options</li></ul></details>
+      <details><summary>Contact sheet cell</summary><ul><li><strong>Apply</strong> — restore this shot onto the scene</li><li><strong>Render Thumbnail</strong> — re-render this cell’s preview</li><li><strong>Edit</strong> — tweak the shot, then save or discard an override</li><li><strong>Reset</strong> — remove the cell’s override</li><li><strong>Base capture</strong> — choose what this cell composes on top of</li><li><strong>Checkbox</strong> — include or exclude the shot from the render</li></ul></details>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=10"></script>
+</body>
+</html>

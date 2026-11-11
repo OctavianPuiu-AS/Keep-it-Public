@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capture Categories · Keep it</title>
+<meta name="description" content="Keep it docs: Capture Categories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=19">
+</head>
+<body data-version="1.0.5" data-page="capture-categories.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Capture Categories</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="categories" data-keywords="transforms, visibility, materials, node groups, camera, modifiers, lights, world, render settings, compositor, custom properties, drivers">
+    <div class="sec"><h2>What each category stores</h2><span class="rule"></span></div>
+    <p>Each category toggle controls a specific part of the scene. Here is what each one actually stores, and any caveats worth knowing.</p>
+    <div class="acc">
+      <details><summary>Transforms</summary><p>Every object’s location, rotation, scale, and shape-key values. Restoring this moves objects back to their captured positions. This is heavier than other categories because it touches every object in scope.</p></details>
+      <details><summary>Visibility</summary><p>Per-object and per-collection visibility flags: hide in viewport, hide in render, selectability, display type and colour. Also captures collection exclude, holdout, and colour tag settings.</p></details>
+      <details><summary>Materials</summary><p>Each object’s material slot assignments and the full node tree of every material. On restore, material nodes are rebuilt from the captured data. This is one of the heavier categories because it replaces node trees.</p></details>
+      <details><summary>Node Group Internals</summary><p>The internal node tree of every node group used in the scene. Affects all materials that share a group. Use this when you need to capture changes made inside a group rather than just which group is assigned.</p></details>
+      <details><summary>Camera</summary><p>Which camera is active and whether the viewport is looking through it. Note: a camera’s position and lens settings are managed by Views, not by Captures.</p></details>
+      <details><summary>Modifiers</summary><p>Each object’s modifier stack. On restore, modifiers are rebuilt. This is a heavy operation and can be slow on complex objects.</p></details>
+      <details><summary>Lights</summary><p>Light data including type, colour, energy, radius, shadow settings, spot angle, area shape and size, and the light’s shader nodes. Also captures per-object light linking. A light’s position and visibility are covered by the Transforms and Visibility categories respectively.</p></details>
+      <details><summary>World</summary><p>The world background: colour, environment or sky texture, and the world shader node tree.</p></details>
+      <details><summary>Render Settings</summary><p>The full render configuration: engine, sampling, resolution, colour management, frame range, output format, and more. Use this when you need to switch between entirely different render setups per capture. Note that the Render panel’s variant axes offer a more targeted way to vary resolution and format without baking them into each capture.</p></details>
+      <details><summary>Compositor</summary><p>The scene’s compositing node tree. Captures and rebuilds the entire compositor network on restore. Affects the whole scene, not individual objects. On Blender 5.3, which stacks compositor effects like modifiers, it holds the whole stack: every effect, its settings and keyframes, their order and which one is selected.</p></details>
+      <details><summary>Custom Properties</summary><p>Custom properties on objects and collections. Useful when you’re driving rigs or add-ons through custom props and want to capture those states.</p></details>
+      <details><summary>Drivers</summary><p>Saves the driver expressions on objects, lights, cameras, the scene, world, materials, and node groups — the little formulas that make one value automatically follow another. It restores those live links, not just the value they produced at capture time.</p><p>It <strong>skips drivers on bones, shape keys, and vertex groups</strong> — those never get touched.</p></details>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=10"></script>
+</body>
+</html>
