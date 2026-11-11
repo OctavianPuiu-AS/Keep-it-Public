@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="../assets/docs.css?v=13">
+<link rel="stylesheet" href="../assets/docs.css?v=19">
 </head>
 <body data-version="1.0.5" data-page="main-panel.html">
 
@@ -61,12 +61,15 @@
     <div class="row">
       <div class="txt">
         <p>Captures can be organised into named groups. A dropdown above the thumbnail lets you filter the gallery by group, keeping large collections manageable.</p>
-        <p><strong>Arrange Captures</strong> — the button beside the group filter opens the captures on a panel at the top of the viewport, each with its picture, name, category icons and when it was taken. Drag one to move it; the gallery and its arrows follow. <kbd>Enter</kbd> or <strong>Done</strong> keeps the new order (one undo step), <kbd>Esc</kbd> or <strong>Put Back</strong> returns the old one.</p>
-        <p>Each group keeps its own order: arranging a group leaves All as it was, and arranging All leaves every group alone. A capture that joins a group goes to its end, and Latest always stays last.</p>
       </div>
       <div class="pics"><img class="ui" src="media/ui/groups.png" alt="The group dropdown with Add, Remove, Rename and Move" width="380" loading="lazy"></div>
     </div>
-    <p><img class="ui" src="media/ui/arrange.png" alt="The Arrange Captures panel: four captures with their pictures, category icons and times, and the Put Back and Done buttons" width="640" loading="lazy"></p>
+  </section>
+  <section id="arrange" data-keywords="arrange, order, drag, reorder">
+    <div class="sec"><h2>Arrange Captures</h2><span class="rule"></span></div>
+    <p>The button beside the group filter opens the captures on a panel at the top of the viewport, each with its picture, name, category icons and when it was taken. Drag one to move it; the gallery and its arrows follow. <kbd>Enter</kbd> or <strong>Done</strong> keeps the new order (one undo step), <kbd>Esc</kbd> or <strong>Put Back</strong> returns the old one.</p>
+    <figure class="shot media"><video autoplay muted loop playsinline preload="metadata" poster="media/arrange-poster.jpg" aria-label="Arranging captures: drag a capture to a new place, then Done"><source src="media/arrange.mp4" type="video/mp4"></video></figure>
+    <p>Each group keeps its own order: arranging a group leaves All as it was, and arranging All leaves every group alone. A capture that joins a group goes to its end, and Latest always stays last.</p>
   </section>
   <section id="categories" data-keywords="categories, toggles">
     <div class="sec"><h2>Category toggles</h2><span class="rule"></span></div>
@@ -131,6 +134,6 @@
   <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
 </footer>
 
-<script src="../assets/docs.js?v=9"></script>
+<script src="../assets/docs.js?v=10"></script>
 </body>
 </html>

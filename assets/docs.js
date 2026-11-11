@@ -125,6 +125,9 @@
       toggle.lastChild.textContent = open ? '−' : '+';
     });
 
+    // the search lives in this column too, above the contents
+    var search = document.getElementById('search');
+    if (search) side.appendChild(search);
     side.appendChild(toggle);
     side.appendChild(el('div', { class: 'body' }, [
       el('div', null, [el('h4', { text: 'KEEP IT' }), common]),

@@ -68,6 +68,8 @@ nav.links a {
 }
 nav.links a { box-shadow: 3px 3px 0 -1px var(--ground), 3px 3px 0 0 var(--clay); }
 nav.links a:hover { background: var(--clay); color: var(--card); }
+nav.links a.newbtn { background: var(--clay); color: var(--card); }
+nav.links a.newbtn:hover { background: var(--card); color: var(--clay); }
 
 /* page title: the one line that runs to the window edge (Hub style) */
 .pagehead { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
@@ -113,6 +115,15 @@ figure { margin: 0; }
 /* search */
 .search { position: sticky; top: 0; z-index: 5; background: var(--ground); padding: 12px 0 10px; margin: -12px 0 -10px; display: flex; flex-direction: column; gap: 10px; }
 .search.compact .kw, .search.compact .count, .search.compact .results { display: none; }
+.side .search { position: static; margin: 32px 0 0; padding: 0; background: none; }
+.side .sbox { box-sizing: border-box; height: 32px; padding: 0 8px 0 14px; gap: 8px; font-size: 14px; }
+.side .sbox svg { width: 15px; height: 15px; }
+.side .sbox kbd { font-size: 11px; padding: 2px 6px; }
+.side .search .kw { max-height: 24px; overflow: hidden; }
+.side .search .kw button { font-size: 12px; padding: 5px 10px; }
+.side .results { max-height: 60vh; }
+body > nav.links { max-width: 1180px; margin: 22px auto 0; }
+body > nav.links ul { justify-content: center; }
 .sbox { display: flex; align-items: center; gap: 10px; padding: 10px 16px; border: 1px solid var(--clay); border-radius: 999px; background: var(--card); color: var(--clay); }
 .sbox:focus-within { box-shadow: 0 0 0 3px rgba(158, 83, 48, 0.15); }
 .sbox svg { width: 18px; height: 18px; flex-shrink: 0; }
@@ -210,7 +221,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   .side-toggle { display: flex; justify-content: space-between; align-items: center; width: 100%; font: 700 14px var(--font); color: var(--clay); background: none; border: 0; padding: 0; cursor: pointer; }
   .side .body { display: none; flex-direction: column; gap: 18px; margin-top: 12px; }
   .side.open .body { display: flex; }
-  .search { position: static; margin: 0; padding: 0; }
+  .search, .side .search { position: static; margin: 0; padding: 0; }
 }
 @media (min-width: 901px) { .side .body { display: flex; flex-direction: column; gap: 18px; } }
 @media (max-width: 640px) {
