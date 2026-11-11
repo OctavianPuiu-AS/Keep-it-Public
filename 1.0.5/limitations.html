@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Limitations and Known Issues · Keep it</title>
+<meta name="description" content="Keep it docs: Limitations and Known Issues.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=13">
+</head>
+<body data-version="1.0.5" data-page="limitations.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Limitations and Known Issues</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="known" data-keywords="speed, compositor, camera, linked, overrides, render slots, node groups, categories, deleted, scope, drivers, linked duplicate">
+    <div class="sec"><h2>Limitations and known behaviours</h2><span class="rule"></span></div>
+    <div class="acc">
+      <details><summary>Restore speed depends on categories</summary><p>Simple categories like visibility are fast. Heavy categories — Object Transforms, Shader Nodes, Node Group and Modifiers — take longer because they rebuild node trees and modifier stacks rather than setting a value. On complex scenes with many objects, a full restore can take several seconds.</p></details>
+      <details><summary>Compositor is scene-wide</summary><p>The compositor category captures and restores the entire scene node tree. There is no per-object or per-collection scoping for it.</p></details>
+      <details><summary>Camera position is managed by Views, not Captures</summary><p>Enabling the Camera category only captures which camera is active, not its transform or lens settings. To capture a specific camera angle, use a View.</p></details>
+      <details><summary>Linked libraries and overrides</summary><p>Keep it captures the visible state of linked and overridden objects. Restoring may behave differently depending on how deep the override goes — some properties on fully linked objects cannot be written back.</p></details>
+      <details><summary>Render slots cap at 8</summary><p>Blender provides 8 render result slots. If your job produces more than 8 renders, slots cycle and earlier renders are overwritten in the Image Viewer. The files on disk are always saved individually and are not affected.</p></details>
+      <details><summary>Node groups are shared</summary><p>Node Group captures the internal tree of every node group. Because groups are shared data in Blender, restoring a group’s internals affects every material or object that uses it — not just the ones in scope.</p></details>
+      <details><summary>Restoring uses the categories that are on now</summary><p>A restore applies the capture through whichever categories are currently switched on — not the ones that were on when it was taken. Switch Lights off and restoring a capture that holds lights won’t touch them. This is deliberate, and it’s what makes partial restores possible, but it means a capture can behave differently depending on the panel’s current state.</p></details>
+      <details><summary>Deleted objects stay deleted</summary><p>Restoring does not bring back objects you deleted since the capture, unless <strong>Keep Deleted</strong> is on. Lights are the exception — <strong>Recreate Lights</strong> is on by default.</p></details>
+      <details><summary>Scope stays on until you turn it off</summary><p>Scope is a panel setting, not a per-capture one. Leave it on and every capture you take afterwards is scoped too, storing only that part of the scene. Those captures are marked partial, but it’s easy to take several before noticing.</p></details>
+      <details><summary>Drivers restore removes newer drivers</summary><p>Restoring the Drivers category also deletes drivers added since the capture, so the setup matches exactly. Drivers on bones, shape keys and vertex groups are never touched.</p></details>
+      <details><summary>Linked duplicated camera</summary><p>Linked-duplicated cameras (<kbd>Alt D</kbd>) share one camera datablock. Views store and apply that data, so two views on linked duplicates will overwrite each other’s lens and DOF: landing on one changes the other. Their positions are independent (that lives on the object), and so is each view’s render resolution. Use <kbd>Shift D</kbd> for a camera you want to give genuinely independent views. Blender shows the sharing as a user count next to the camera-data name in Object Data Properties; clicking that number makes the copy independent.</p></details>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=9"></script>
+</body>
+</html>

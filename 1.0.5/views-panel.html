@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Views panel · Keep it</title>
+<meta name="description" content="Keep it docs: Views panel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=13">
+</head>
+<body data-version="1.0.5" data-page="views-panel.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Views panel</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="overview" data-keywords="views, camera, default view">
+    <div class="sec"><h2>Overview</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>At the top you pick a camera. Keep it creates a <strong>Default View</strong> at its current position, so there’s always something to come back to.</p>
+        <p>Below it is that camera’s list of saved views, and down the right side are the buttons to add, remove, go to and duplicate them. They act on the highlighted row.</p>
+        <p>A view stores nothing about the scene, which is why any view works with any capture. A capture does remember which view it was taken on, though, and clicking it switches back to that view.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/view-panel.png" alt="The Views panel" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="camera" data-keywords="camera, select, lock camera to view, duplicate, delete">
+    <div class="sec"><h2>Camera</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Camera Dropdown</strong> — Picks which camera’s views you’re managing.</p>
+        <p><strong>Select Camera</strong> — Selects that camera in the viewport.</p>
+        <p><strong>Lock Camera to View</strong> — Toggles Blender’s native “lock camera to view” so moving the viewport moves the camera.</p>
+        <p><strong>Duplicate Camera</strong> — Copies the camera along with all of its views.</p>
+        <p><strong>Delete Camera</strong> — Deletes the camera (and its views go with it).</p>
+        <p><strong>Linked cameras</strong> — a camera inside a linked collection can’t be listed in the dropdown. The panel says where it is and offers <strong>Make Override</strong>, which makes it usable.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/view-camera.png" alt="The camera dropdown" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="types" data-keywords="still, animated, keyframes, padlock">
+    <div class="sec"><h2>View types</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Still view</strong> — A single camera position. Click it and the camera goes there.</p>
+        <p><strong>Animated view</strong> — A camera move. Click it and the camera plays that move.</p>
+        <p>A view becomes animated when you save it with the camera keyframed. Add keyframes to a still view’s camera, press Save, and it converts.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/view-types.png" alt="A still view and an animated view" width="290" loading="lazy"><p class="aside">Note: this padlock and the one on each camera do different jobs. This one protects the view; the camera one makes the viewport drive the camera.</p></div>
+    </div>
+  </section>
+  <section id="saving" data-keywords="unsaved, save, revert, lock">
+    <div class="sec"><h2>Saving changes to a view</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>A view is always live. Apply one, move the camera or change its lens, and the view’s row tells you if there’s something to save.</p>
+        <p>You can browse to another view mid-change and come back; the change is still there, still unsaved.</p>
+        <p>Anything the view stores counts: position, focal length, projection, sensor, clip, depth of field, resolution — and keyframes on an animated view. Changing your render resolution marks the view unsaved too.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/view-unsaved.png" alt="View rows showing unsaved, save, revert and lock" width="290" loading="lazy"><div class="aside">        <p><strong>unsaved</strong> — Camera no longer matches what the view stored.</p>
+        <p><strong>Save (✓)</strong> — Saves the camera’s current state.</p>
+        <p><strong>Revert (↺)</strong> — Discards the change and puts the camera back.</p>
+        <p><strong>Lock (🔒)</strong> — Protects the view.</p></div></div>
+    </div>
+  </section>
+  <section id="actions" data-keywords="add view, remove, go to view, duplicate">
+    <div class="sec"><h2>View actions</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Add View</strong> — Saves the camera’s current position as a new view.</p>
+        <p><strong>Remove View</strong> — Deletes the selected view.</p>
+        <p><strong>Go to View</strong> — Applies the selected view (moves the camera there and looks through it).</p>
+        <p><strong>Duplicate View</strong> — Makes a copy of the selected view.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/view-actions.png" alt="The view buttons" width="30" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="settings" data-keywords="settings, lens, sensor, depth of field, camera properties">
+    <div class="sec"><h2>View settings</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>Saves the lens settings with each view — sensor, shift, clip range, depth of field, composition guides — so switching views switches those too, not just the angle.</p>
+        <p>Never includes background images or colour management.</p>
+        <p>It only affects still properties. An animated view still stores keyframed camera data, so a focal length animation is saved with it.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/view-settings.png" alt="Views Settings: Capture Camera Properties on Views" width="300" loading="lazy"></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=9"></script>
+</body>
+</html>

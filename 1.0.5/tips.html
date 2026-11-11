@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tips &amp; Best Practices · Keep it</title>
+<meta name="description" content="Keep it docs: Tips &amp; Best Practices.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=13">
+</head>
+<body data-version="1.0.5" data-page="tips.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Tips &amp; Best Practices</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="tips" data-keywords="naming, groups, lock, contact sheet, render properties, scope, colorways, heavy categories, node groups">
+    <div class="sec"><h2>Tips</h2><span class="rule"></span></div>
+    <div class="acc">
+      <details><summary>Name captures clearly from the start</summary><p>Capture names appear in file names, the contact sheet, and the gallery. A clear naming convention like <code>Location_Mood</code> (“Studio_Warm”, “Outdoor_Overcast”) saves time when managing large collections and reading render output.</p></details>
+      <details><summary>Use groups for large projects</summary><p>Once you have more than 8–10 captures, group them by category — by mood, by lighting setup, or by scene section. The group filter in the gallery makes switching much faster.</p></details>
+      <details><summary>Lock captures you’re happy with</summary><p>Once a capture is final, lock it. This prevents accidental overwriting when you’re iterating on new captures nearby, and makes it obvious which states are “approved”.</p></details>
+      <details><summary>Use the contact sheet before every render</summary><p>Before committing to a long render queue, open the contact sheet and check every cell. Refresh thumbnails for any shots that look stale. Toggling out a few unwanted shots here is much cheaper than deleting bad renders later.</p></details>
+      <details><summary>Keep render properties out of captures when possible</summary><p>Unless you genuinely need different render engines or sampling per capture, leave the <strong>Render Properties</strong> category off. Use profiles and resolution/format variants instead. It keeps captures lighter and the render setup more flexible.</p></details>
+      <details><summary>Scope for partial restores</summary><p>You don’t have to apply a capture to the whole scene every time. Use Scope to push only the lighting from one capture while keeping the materials from your current state. This gives you fine-grained mixing without creating separate captures for every combination.</p></details>
+      <details><summary>Let colorways handle colour variations</summary><p>If the only difference between two looks is a material swap, use a colorway instead of duplicating the capture. Fewer captures means a cleaner gallery and easier maintenance.</p></details>
+      <details><summary>Leave the heavy categories off unless you need them</summary><p>Four categories do most of the work on a restore: Object Transforms, Shader Nodes, Node Group Internals and Modifiers. They rebuild node trees and modifier stacks rather than setting a value. If a capture is only about lighting, switching the other three off makes it noticeably faster to restore and smaller in the file.</p></details>
+      <details><summary>Be deliberate with Node Group</summary><p>Node groups are shared data in Blender, so restoring one affects every material using it — not only the objects in your scope. Switch it on when a capture genuinely changes a group’s insides, and leave it off otherwise.</p></details>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=9"></script>
+</body>
+</html>

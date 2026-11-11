@@ -164,6 +164,8 @@ table.kv th { font-weight: 600; white-space: nowrap; width: 1%; color: var(--cla
 .note.warn, .note.good { text-align: left; }
 .note.warn { background: rgba(176, 64, 48, .10); }
 .note.good { background: rgba(110, 140, 70, .12); }
+ul.news { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 10px; }
+ul.news li::marker { color: var(--clay); }
 img.ui.wide { width: 100%; max-width: 760px; }
 .row + .row { margin-top: 18px; }
 .row .txt ul { margin: 0; padding-left: 20px; display: flex; flex-direction: column; gap: 4px; }

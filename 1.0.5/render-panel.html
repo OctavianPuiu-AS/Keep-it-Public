@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Render panel · Keep it</title>
+<meta name="description" content="Keep it docs: Render panel.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=13">
+</head>
+<body data-version="1.0.5" data-page="render-panel.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Render panel</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="overview" data-keywords="render, add job, run all, farm, export">
+    <div class="sec"><h2>Overview</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>It turns your captures and views into a render queue that runs on its own.</p>
+        <p>At the top, <strong>Add Job</strong> creates a render job and <strong>Run All</strong> renders every job. Beside them sit a contact sheet for all jobs at once and a toggle to skip files you’ve already rendered.</p>
+        <p><strong>Skip Existing</strong> — skips shots whose output file is already on disk (matched by name), so a re-run picks up where the last one stopped.</p>
+        <p><strong>Output folder</strong> — the folder icon in the panel header opens the last render’s output folder in your file browser (or the first job’s, before anything has rendered).</p>
+        <p>At the bottom, <strong>Export All to Farm File</strong> writes every job into one .blend for rendering elsewhere.</p>
+        <p>After a run, a <strong>Last render</strong> line reports how it went; the ✕ dismisses it. A render you cancel with Esc counts as cancelled, not failed.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-panel.png" alt="The Render panel" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="job" data-keywords="job, captures, views, duplicate, delete">
+    <div class="sec"><h2>Render job</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>A job renders each capture through each view (2 captures × 2 views = 4 renders).</p>
+        <p><strong>Captures</strong> — which captures this job renders.</p>
+        <p><strong>Views</strong> — which views it renders through.</p>
+        <p><strong>Job variant</strong> — opens the render setup.</p>
+        <p><strong>Contact Sheet</strong> — a grid of images this job will produce.</p>
+        <p><strong>Render</strong> — renders this job on its own.</p>
+        <p><strong>Duplicate Job</strong> — copies the job with all its settings.</p>
+        <p><strong>Delete Job</strong> — removes it.</p>
+        <p><strong>Name</strong> — each job has a name (job1, job2, …) in its bottom row; click it to rename. A duplicate gets the next free number. Use it in file names and paths with <code>{job}</code>.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-job.png" alt="A render job row" width="300" loading="lazy"><div class="aside">        <p>Under the row, two counts: how many <strong>still images</strong> the job will produce, and how many <strong>animations</strong>.</p></div></div>
+    </div>
+  </section>
+  <section id="pickers" data-keywords="captures dropdown, views dropdown">
+    <div class="sec"><h2>Choosing captures and views</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Captures dropdown</strong> — Picks which captures this job includes.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-captures.png" alt="The captures dropdown of a job" width="300" loading="lazy"></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Views dropdown</strong> — Picks which views this job includes.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-views.png" alt="The views dropdown of a job" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="variants" data-keywords="variants, multiply, axes">
+    <div class="sec"><h2>Variants</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>At the top it tells you how many images the job will produce, so you can watch that number as you add things.</p>
+        <p>Inside are the sections that shape the output:</p>
+        <p><strong>Render Profile</strong> — a saved bundle of render settings.</p>
+        <p><strong>Output</strong> — where files go and what they’re called, and whether each shot is a still, an animation or a playblast.</p>
+        <p><strong>Passes</strong> — extra render passes written alongside the beauty.</p>
+        <p>Then the variant axes. Each one is a list rather than a single setting, and each entry multiplies the job’s output:</p>
+        <p><strong>Resolution · Format · Frames · Colour Management · Colorways · Compositor</strong></p>
+        <p>Leave an axis empty and the job uses the scene’s setting.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-variants.png" alt="The Variants section of a job" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="profile" data-keywords="render profile, engine, sampling, apply, update">
+    <div class="sec"><h2>Render Profile</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>A saved bundle of render settings a job builds on. Set your quality once, then point as many jobs at it as you like.</p>
+        <p>You make a profile in Blender’s own Render Properties — engine, sampling, colour management, output format, passes — and Keep it stores it inside the .blend, not as a separate file.</p>
+        <p><strong>What it doesn’t store:</strong> the frame range. That comes from the scene, or from a Frames variant. A profile describes <em>how</em> to render, never <em>which frames</em>.</p>
+        <h3>The dropdown</h3>
+        <p>Picks which profile the job uses. Left at <strong>Using capture/scene profile</strong>, the job renders with whatever the capture or the scene already has — no profile involved.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-profile.png" alt="The Render Profile row" width="300" loading="lazy"><div class="aside">        <p><strong>Add (⤓)</strong> — Saves the scene’s current Render Properties as a new profile.</p>
+        <p><strong>Apply</strong> — Loads the profile into Render Properties so you can edit it natively.</p>
+        <p><strong>Update (⟳)</strong> — Re-grabs the scene’s current Render Properties into this profile.</p>
+        <p><strong>Rename</strong> — Renames the profile.</p>
+        <p><strong>Remove</strong> — Deletes the profile.</p></div></div>
+    </div>
+  </section>
+  <section id="output" data-keywords="output, still, animation, playblast, tokens, path, prism">
+    <div class="sec"><h2>Output</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Type</strong> — Still, Animation or Playblast. Still renders one frame per shot, Animation renders a frame sequence, and Playblast is a raw viewport render that skips the render profile, colour management, colorways and compositor.</p>
+        <p><strong>Name</strong> — The filename pattern for each render. Defaults to <code>{capture}_{view}</code>. Press + to insert a token.</p>
+        <p><strong>Path</strong> — The folder renders are saved to. Tokens work here too.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-output.png" alt="The Output section" width="300" loading="lazy"><div class="aside"><p><strong>Tokens</strong></p><p><code>{job} {capture} {view} {camera} {resolution} {framerate} {framerange} {frame} {format} {look} {colorway} {compositor} {identifier} {version} {date_time}</code></p></div></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <h3>Prism Pipeline</h3>
+        <p>Keep it asks the running Prism session for the output path and version instead of using the Path and Name above.</p>
+        <p><strong>Identifier</strong> — The Prism task name, such as banner or beauty. Available as <code>{identifier}</code>.</p>
+        <p><strong>Version</strong> — Leave empty and Prism picks the next version.</p>
+        <p><strong>Master</strong> — What happens to Prism’s master version after the job finishes.</p>
+        <p><strong>Comment</strong> — Defaults to “Rendered via Keep it”.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-prism.png" alt="The Output section with Prism Pipeline on" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="passes" data-keywords="passes, aov, cryptomatte, light groups, exr, separate files">
+    <div class="sec"><h2>Passes</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>Extra images from the same render, not more renders. It lists the passes the job’s engine actually produces, grouped the way Blender groups them: EEVEE and Cycles (including your AOVs, Light Groups and Cryptomatte), Octane’s passes and V-Ray’s render channels. All are off by default — tick the ones you need.</p>
+        <p><strong>Use Scene Passes</strong> — also outputs the passes already enabled in View Layer › Passes.</p>
+        <p><strong>Write Separate Files</strong> — writes each pass as its own image next to the beauty, named <code>&lt;output&gt;_&lt;pass&gt;</code>, instead of relying on a multilayer EXR to carry them. Only a multilayer EXR holds passes inside the render: with PNG, JPEG or a plain EXR and this off, the section warns you that the passes would not be saved.</p>
+        <p><strong>Show more Octane passes</strong> — with Octane, the niche groups (such as per-light passes) stay hidden until you press this.</p>
+        <p>Colour passes follow the job’s format, bit depth and compression. Data passes (Depth, Normal, Position, Cryptomatte) are always written as 32-bit EXR, because 8 bits would ruin them.</p>
+    </div>
+      <div class="pics"><img class="ui" src="media/ui/r-passes.png" alt="The Passes section of a job" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="axes" data-keywords="resolution, format, frames, colorways, colour management, compositor">
+    <div class="sec"><h2>Variant axes</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <h3>Resolution</h3>
+        <p>Leave it empty and the job uses whatever the render profile sets, or the scene’s resolution if it has no profile. Press + to add a size. Each row is one resolution, and every row multiplies the job: two rows means every shot renders twice.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-resolution.png" alt="Two resolution rows" width="300" loading="lazy"></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <h3>Format</h3>
+        <p>Leave it empty and the job uses the profile’s format, or the scene’s if it has no profile. Press + to add a format; each row multiplies the job.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-format.png" alt="Two format rows" width="300" loading="lazy"></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <h3>Frames</h3>
+        <p>Renders each shot over more than one frame range. Leave it empty and the job uses the scene’s range, or an animated view’s own. Press + to add a range; each row multiplies the job.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-frames.png" alt="Two frame range rows" width="300" loading="lazy"></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <h3>Colorways</h3>
+        <p>Renders each shot with different materials swapped in. Leave it empty and materials come from the capture. Press + to add a colorway; each one multiplies the job.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-colorways.png" alt="Two colorways with material swaps" width="300" loading="lazy"></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <h3>Colour Management</h3>
+        <p>Renders each shot with more than one view transform or look. Leave it empty and the job uses the profile’s, or the scene’s. Press + to add one; each row multiplies the job.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-colour.png" alt="Two colour management rows" width="300" loading="lazy"></div>
+    </div>
+    <div class="row">
+      <div class="txt">
+        <h3>Compositor</h3>
+        <p>Renders each shot through a different compositor node group. Leave it empty and the job uses the scene’s compositor. Press + to add one; each row multiplies the job.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-compositor.png" alt="Two compositor rows" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="contact-sheet" data-keywords="contact sheet, preview, sorting, export">
+    <div class="sec"><h2>Contact Sheet</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p>Every shot the job will render, as previews. One cell per capture × view × variant. Open it from the job or the Render panel.</p>
+        <p>It’s where you check a job before committing render time to it. Each cell shows a thumbnail and its label, and carries its own buttons.</p>
+        <p>The dropdown at the top orders the grid, and the render queue will follow.</p>
+        <p>Previews come in two speeds: a quick one (⟳) and a slower one through your render engine when you need to see what you’ll actually get. You can also export the whole grid as an image.</p>
+        <h3>Sorting</h3>
+        <p><strong>None</strong> — natural order (default).</p>
+        <p><strong>Exclude Last</strong> — included shots first.</p>
+        <p><strong>Capture</strong> — grouped by capture.</p>
+        <p><strong>View</strong> — grouped by view or camera.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-sheet.png" alt="A contact sheet with three cells" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="sheet-settings" data-keywords="aspect, preview size, grid, samples, simplify, override isolation, full, fast, verify">
+    <div class="sec"><h2>Contact Sheet settings</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>True Aspect Ratio</strong> — Letterboxes each preview at its real aspect instead of cropping it square. Regenerate previews to apply.</p>
+        <p><strong>Preview Size</strong> — How large the cached previews are, in pixels. Bigger looks better and costs more to generate.</p>
+        <p><strong>Contact Sheet Grid Thickness</strong> — The lines between cells in the exported contact-sheet image (2 px by default).</p>
+        <h3>Preview render</h3>
+        <p>Settings for the engine refresh button only. All of them are kept separate from the job’s real render settings, so previewing fast doesn’t change what you deliver.</p>
+        <p><strong>Engine</strong> — Which engine to preview with. Can differ from the job’s.</p>
+        <p><strong>Preview Samples</strong> — Sample count for previews, independent of the job’s.</p>
+        <p><strong>Persistent Data</strong> — Keeps geometry data resident between preview renders.</p>
+        <p><strong>Simplify</strong> — Caps subdivision and texture size while generating previews.</p>
+        <h3>Override isolation</h3>
+        <p>How a per-cell override is undone after its shot renders.</p>
+        <ul><li><strong>Full</strong> — Restores the whole scene around the shot.</li><li><strong>Fast</strong> — Restores only what the override actually changed. Quicker, but relies on Blender reporting every change.</li><li><strong>Verify</strong> — Only for troubleshooting.</li></ul>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-sheet-settings.png" alt="Contact Sheet Settings" width="300" loading="lazy"></div>
+    </div>
+  </section>
+  <section id="cell" data-keywords="cell, apply, edit, reset, include, exclude, base capture, override">
+    <div class="sec"><h2>Cell</h2><span class="rule"></span></div>
+    <div class="txt">
+        <p>A cell is a capture, seen through a view, with one combination of variants.</p>
+        <p>Each cell shows the thumbnail, its label (capture + view + variant), and a dot (●) if it has an override. You can edit every image by hand.</p>
+        <h3>Buttons</h3>
+        <p><strong>Apply</strong> — Restores that exact shot onto the scene so you can look at it live.</p>
+        <p><strong>Render Thumbnail</strong> — Re-renders just this cell’s preview with the engine.</p>
+        <p><strong>Edit</strong> — Opens the shot for editing. Adjust the scene, then Save or Cancel in the Render panel.</p>
+        <p><strong>Reset</strong> — Only appears on a cell that has an override. Removes it, so the shot renders plain again.</p>
+        <p><strong>Include/Exclude</strong> — Toggles whether this shot renders. Only affects rendering, not the capture or view itself.</p>
+        <p><strong>Base capture</strong> — Chooses a capture this cell composes <em>on top of</em>. It fills in only what the cell’s own capture doesn’t set.</p>
+    </div>
+  </section>
+  <section id="settings" data-keywords="lock interface, solid, autosave, slots, render in">
+    <div class="sec"><h2>Render Settings</h2><span class="rule"></span></div>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Auto Lock Interface</strong> — Enables Blender’s Lock Interface while Keep it renders. Recommended: it keeps renders stable by stopping the scene changing under them.</p>
+        <p><strong>Switch to Solid Before Rendering</strong> — Sets viewports to Solid shading during the render, then puts them back. Stops the viewport re-rendering the scene alongside the render.</p>
+        <p><strong>Autosave Before Rendering</strong> — Saves the .blend before a render starts, if it’s been saved once already.</p>
+        <p><strong>Renders to Slots</strong> — Advances the Render Result slot for each shot, so the last few renders stay loaded in the Image Editor rather than only on disk.</p>
+        <p><strong>Render In</strong> — Where the render appears:</p>
+        <ul><li><strong>Keep User Interface</strong> — renders in the background, no popup.</li><li><strong>New Window</strong> — opens a render window so you can watch progress.</li><li><strong>Image Editor</strong> — shows it in an Image Editor instead.</li></ul>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/r-settings.png" alt="Render Settings" width="300" loading="lazy"></div>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=9"></script>
+</body>
+</html>

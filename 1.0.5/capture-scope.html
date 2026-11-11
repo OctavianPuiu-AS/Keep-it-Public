@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Capture Scope · Keep it</title>
+<meta name="description" content="Keep it docs: Capture Scope.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=13">
+</head>
+<body data-version="1.0.5" data-page="capture-scope.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Capture Scope</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="scope" data-keywords="scope, selected, objects, collections, exclude">
+    <div class="sec"><h2>Capture Scope</h2><span class="rule"></span></div>
+    <p>By default a capture records and restores the entire scene. Scope lets you narrow that down.</p>
+    <div class="row">
+      <div class="txt">
+        <p><strong>Selected only</strong> — Only objects that are selected at the time of capture (or restore) are included. Everything else is untouched.</p>
+        <p><strong>Specific objects</strong> — You pick a named list of objects. Only those objects are captured or restored, regardless of selection.</p>
+        <p><strong>Specific collections</strong> — You pick one or more collections. Only objects inside those collections are included.</p>
+        <p><strong>Exclude mode</strong> — Inverts the scope — the specified objects or collections are excluded, and everything else is included.</p>
+      </div>
+      <div class="pics"><img class="ui" src="media/ui/scope.png" alt="The four scope buttons" width="60" loading="lazy"></div>
+    </div>
+    <p>Scope applies to both capturing and restoring. You can capture a full scene and restore with a scope to only push changes onto certain objects, leaving the rest alone. This makes it possible to have overlapping captures that each “own” different parts of the scene.</p>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=9"></script>
+</body>
+</html>

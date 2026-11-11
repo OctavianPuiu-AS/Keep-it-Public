@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Common Issues · Keep it</title>
+<meta name="description" content="Keep it docs: Common Issues.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="../assets/docs.css?v=13">
+</head>
+<body data-version="1.0.5" data-page="common-issues.html">
+
+<header class="banner">
+  <img class="banner-full" src="../assets/media/banner.png" width="2000" height="315" alt="Keep it — One scene. Infinite moments. Scene management.">
+  <div class="banner-small" aria-hidden="true">
+    <img src="../assets/media/banner-box.png" width="260" height="245" alt="">
+    <p class="tag">One scene. Infinite moments.</p>
+    <p class="cat">scene management</p>
+  </div>
+</header>
+
+<div class="frame">
+<aside class="side" id="side" aria-label="Contents"></aside>
+
+<main>
+  <header class="pagehead">
+    <span class="marker" aria-hidden="true"><i></i><b></b></span>
+    <h1>Common Issues</h1>
+    <span class="live">1.0.5</span>
+  </header>
+  <p class="oldver" id="oldver"></p>
+  <div id="search"></div>
+
+  <section id="issues" data-keywords="thumbnails, slow, contact sheet, black viewport, lock interface, restore, missing files">
+    <div class="sec"><h2>Common issues</h2><span class="rule"></span></div>
+    <div class="acc">
+      <details><summary>Thumbnails appear blank after opening a file</summary><p>Thumbnails are rebuilt when a file loads. If they appear blank, wait a moment for the background rebuild to finish. If they remain blank, save and restart Blender — stale thumbnail data from a previous installation can occasionally persist.</p></details>
+      <details><summary>Restore feels slow</summary><p>Disable heavy categories you don’t need for a given capture: Object Transforms, Shader Nodes, Node Group Internals and Modifiers are the main contributors. Only enable them when you actually need to capture changes in those areas.</p></details>
+      <details><summary>Renders don’t match what the contact sheet shows</summary><p>Contact sheet thumbnails are viewport proxies, not final renders — differences in lighting, shading and post-processing are expected. Engine previews are closer but still not identical: they use their own sample count and Simplify limits, kept separate from the job’s real settings so previewing stays fast. For an accurate look at one shot, use that cell’s render-thumbnail button.</p></details>
+      <details><summary>The 3D viewport goes black during render</summary><p>This can happen if the viewport shading is set to Rendered before the queue starts. Enable <strong>Switch to Solid Before Rendering</strong> in Render Settings (it is on by default). Also check that <strong>Render In</strong> isn’t set to <em>Keep User Interface</em>, so Blender has a render output to display.</p></details>
+      <details><summary>Interface is not locked during render</summary><p>Check that <strong>Auto Lock Interface</strong> is enabled in Render Settings. Note that the lock applies to the full Blender interface — the render window itself remains interactive.</p></details>
+      <details><summary>A capture seems to not restore fully</summary><p>Two things to check. First, the categories switched on <em>now</em> — a restore applies the capture through whichever categories are currently enabled, so a category that’s off is skipped even if the capture holds it. Second, the categories that were on when you pressed Keep it — anything off then was never recorded, and re-capturing is the only fix.</p></details>
+      <details><summary>Render output files are missing</summary><p>Check the output path in the job’s Render Setup. If the path uses <code>//</code> (relative), the <code>.blend</code> file must be saved first. Keep it can autosave before rendering — enable <strong>Autosave Before Rendering</strong> in Render Settings.</p></details>
+    </div>
+  </section>
+</main>
+</div>
+
+<footer>
+  <span>Keep it — scene management for Blender</span>
+  <a href="https://www.alalongstudio.com/en">Alalong Studio</a>
+</footer>
+
+<script src="../assets/docs.js?v=9"></script>
+</body>
+</html>
