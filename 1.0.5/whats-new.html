@@ -36,36 +36,36 @@
   <section id="new" data-keywords="new, arrange, latest, compositor, passes">
     <div class="sec"><h2>New</h2><span class="rule"></span></div>
     <ul class="news">
-      <li><strong>Arrange Captures.</strong> A new button beside the group filter lets you drag your captures into a new order. Each group keeps its own order. <a href="main-panel.html#groups">How it works</a></li>
-      <li><strong>The Latest button is also the way back.</strong> Go to Latest, then press the same button again (now a back arrow) to return to the capture you were on.</li>
-      <li><strong>Blender 5.3’s compositor effects stack.</strong> A capture now holds the whole stack — every effect, its settings and keyframes, the order and which one is selected — and a Compositor variant swaps the whole stack for its shots.</li>
-      <li><strong>Passes warn when they won’t be saved.</strong> Only a multilayer EXR carries passes inside the render. With PNG, JPEG or a plain EXR and Write Separate Files off, the Passes section now tells you.</li>
+      <li><a href="main-panel.html#groups">Arrange Captures</a></li>
+      <li>Latest button is also the way back</li>
+      <li>Blender 5.3 compositor effects stack</li>
+      <li>Warning when passes won’t be saved</li>
     </ul>
   </section>
   <section id="better" data-keywords="speed, latest, hide new, add-ons">
     <div class="sec"><h2>Better</h2><span class="rule"></span></div>
     <ul class="news">
-      <li><strong>Clicking a capture is fast again in animated scenes.</strong> Keep it now puts back only the animated values instead of refreshing the whole scene — on a heavy test scene, from 2.6 s back to 1.35 s per click.</li>
-      <li><strong>Go to Latest keeps your latest work.</strong> What you did since your last click is saved before Latest is shown, the same as a click does.</li>
-      <li><strong>One “KeepIt Hidden” per scene.</strong> With two scenes in a file, each scene’s Hide New objects stay in its own collection.</li>
-      <li><strong>Add-ons enabled mid-session are captured.</strong> A property an add-on or render engine registers after Keep it started is now captured and restored, without restarting Blender.</li>
+      <li>Faster clicks in animated scenes</li>
+      <li>Go to Latest keeps your latest work</li>
+      <li>One “KeepIt Hidden” per scene</li>
+      <li>Add-ons enabled mid-session are captured</li>
     </ul>
   </section>
   <section id="fixed" data-keywords="fixes, latest, simulations, scenes, drivers">
     <div class="sec"><h2>Fixed</h2><span class="rule"></span></div>
     <ul class="news">
-      <li><strong>Latest keeps your work</strong> right after taking, editing or pushing into a capture, and after Browse Captures.</li>
-      <li><strong>Unbaked simulations</strong> no longer restart when you click a capture or render a queue.</li>
-      <li><strong>Two scenes in one file</strong> each keep their own gallery, camera list and captures.</li>
-      <li><strong>Drivers survive a rebuild.</strong> Restoring a material’s node tree or a modifier stack no longer strips their drivers.</li>
-      <li><strong>Objects hidden with the eye</strong> stay hidden when a restore brings their collection back.</li>
-      <li><strong>Hair</strong> comes back with its viewport and render visibility, in its place in the modifier stack.</li>
-      <li><strong>Material slots</strong> switch back to their mesh when the capture had them there.</li>
-      <li><strong>Compositor links</strong> from passes the current engine doesn’t have (Cycles-only passes on EEVEE) are kept.</li>
-      <li><strong>Contact-sheet cells</strong> compose their own capture, and Undo back into a cell then Go to Latest puts the camera back.</li>
-      <li><strong>Colorways</strong> with two rows on the same slot put the original material back.</li>
-      <li><strong>Brought-back objects</strong> find a collection that was renamed, and Hide New never takes an object out of the scene.</li>
-      <li><strong>Keep me</strong> can be disabled, re-enabled and updated cleanly.</li>
+      <li>Latest after taking, editing or pushing a capture</li>
+      <li>Unbaked simulations restarting</li>
+      <li>Two scenes in one file</li>
+      <li>Drivers lost on a rebuild</li>
+      <li>Hidden objects showing again</li>
+      <li>Hair visibility and order</li>
+      <li>Material slots on the mesh</li>
+      <li>Compositor links from other engines’ passes</li>
+      <li>Contact-sheet cells and Undo</li>
+      <li>Colorways on a shared slot</li>
+      <li>Renamed collections and Hide New</li>
+      <li>Keep me disable and update</li>
     </ul>
   </section>
 </main>
