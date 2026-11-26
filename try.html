@@ -2965,12 +2965,12 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     if (b.hasAttribute('aria-checked')) return b.getAttribute('aria-checked') === 'true' ? 'off' : 'on';
     return 'tap';
   }
-  // the sound switch: a round bubble in the lower right corner; remembered on this device
+  // the sound switch: a round bubble in the 3D view's lower right corner; remembered on this device
   var muted = false;
   try { muted = localStorage.getItem('keepit-try-muted') === '1'; } catch (err) {}
   var css = document.createElement('style');
-  css.textContent = '.snd-btn { position: fixed; right: 16px; bottom: 16px; z-index: 31; width: 44px; height: 44px; padding: 0; display: grid; place-items: center; border: 1px solid var(--clay); border-bottom-width: 3px; border-radius: 50%; background: var(--card); color: var(--clay); cursor: pointer; box-shadow: 0 2px 10px rgba(40, 24, 16, 0.18); transition: bottom 0.2s; }' +
-    '.snd-btn svg { width: 20px; height: 20px; }' +
+  css.textContent = '.snd-btn { position: absolute; right: 10px; bottom: 10px; z-index: 4; width: 34px; height: 34px; padding: 0; display: grid; place-items: center; border: 1px solid var(--clay); border-bottom-width: 2px; border-radius: 50%; background: rgba(252, 249, 247, 0.92); color: var(--clay); cursor: pointer; }' +
+    '.snd-btn svg { width: 17px; height: 17px; }' + '.vp.celledit .snd-btn { display: none; }' +
     '.snd-btn .x { display: none; } .snd-btn.off .x { display: inline; } .snd-btn.off { color: #9C8A7E; border-color: #9C8A7E; }' +
     '@media (hover: hover) { .snd-btn:hover { background: var(--tint); } }' +
     '.snd-btn:focus-visible { outline: 2px solid var(--clay); outline-offset: 3px; }';
@@ -2990,15 +2990,9 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     try { localStorage.setItem('keepit-try-muted', muted ? '1' : '0'); } catch (err) {}
     if (!muted) { try { ctx(); S.on(); } catch (err) {} }
   });
-  // on the docs site's phones the Contents button sits in that corner: stand just above it
-  function place() {
-    var t = document.querySelector('.side-toggle'), up = 16;
-    if (t && getComputedStyle(t).display !== 'none' && t.offsetHeight) up = 16 + t.offsetHeight + 10;
-    btn.style.bottom = up + 'px';
-  }
   paint();
-  document.body.appendChild(btn);
-  place(); window.addEventListener('resize', place); setTimeout(place, 500);
+  var vpEl = document.getElementById('vp');
+  (vpEl || document.body).appendChild(btn);
   document.addEventListener('click', function (e) {
     if (!e.isTrusted || muted) return;
     var b = e.target.closest && e.target.closest('button, [role="button"], [role="switch"], [role="checkbox"], .rp .cell');
