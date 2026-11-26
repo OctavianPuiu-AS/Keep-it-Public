@@ -1009,6 +1009,12 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     #playground #rp { grid-column: 2; grid-row: 1 / span 2; }
   }
   #playground .rp .sheet.fit .cell { aspect-ratio: auto; height: var(--ch); }
+  .vp .mdock { z-index: 5; }
+  .vp .vp-tl { transition: opacity 0.2s; }
+  @media (max-width: 640px) {
+    #playground .vp { aspect-ratio: 1 / 1; }
+    .vp:has(.mopts) .vp-tl { opacity: 0; }
+  }
 </style>
 </head>
 <body data-root="" data-page="try.html">
@@ -1473,7 +1479,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     });
     views.forEach(function (v) { if (found[v.key]) { var c = found[v.key]; Object.keys(c).forEach(function (k) { v[k] = c[k]; }); } });
     Object.keys(found).sort().forEach(function (key) {
-      if (views.some(function (v) { return v.key === key; })) return;
+      return;
       var v = found[key]; v.key = key; v.id = nextViewId++;
       v.name = key.replace(/^Camera(\d+)$/, 'Camera.$1');
       views.push(v);
