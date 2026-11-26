@@ -2,6 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<link rel="preload" href="assets/media/poster.jpg" as="image">
+<link rel="preload" href="assets/media/courtyard.glb" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/gltf/draco_wasm_wrapper.js" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/gltf/draco_decoder.wasm" as="fetch" crossorigin="anonymous">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Try Keep it</title>
 <meta name="description" content="Try Keep it in your browser: capture a setup, restore it, save views and render a sheet.">
@@ -1014,6 +1018,12 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     #playground #rp { grid-column: 2; grid-row: 1 / span 2; }
   }
   #playground .rp .sheet.fit .cell { aspect-ratio: auto; height: var(--ch); }
+  .vp .poster { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: opacity 0.6s ease; }
+  .vp.live .poster { opacity: 0; }
+  .vp .vp-wait { left: 50%; bottom: 14px; top: auto; transform: translateX(-50%); z-index: 3; white-space: nowrap; transition: opacity 0.3s; animation: kiwait 1.6s ease-in-out infinite; }
+  .vp.live .vp-wait { opacity: 0; animation: none; }
+  @keyframes kiwait { 50% { opacity: 0.55; } }
+  @media (prefers-reduced-motion: reduce) { .vp .vp-wait { animation: none; } }
   .vp .mdock { z-index: 5; }
   .vp .vp-tl { transition: opacity 0.2s; }
   @media (max-width: 640px) {
@@ -1061,6 +1071,8 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     <div class="play" id="play">
       <div class="vp dbl" id="vp">
         <canvas id="vp-canvas" tabindex="0" role="img" aria-label="A courtyard café with chairs, tables, bar stools, a tree and three groups of lights. Drag, or use the arrow keys, to orbit."></canvas>
+        <img class="poster" src="assets/media/poster.jpg" alt="" aria-hidden="true">
+        <span class="pill vp-wait" aria-hidden="true">Loading the 3D scene…</span>
         <div class="grain" aria-hidden="true"></div>
         <div class="scn" id="scene" aria-label="Scene"></div>
         <span class="pill" id="vp-view">Three-quarter</span>
@@ -1283,7 +1295,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   var EXPOSURE = +(/[?&]exp=([\d.]+)/.exec(location.search) || [0, 0.6])[1];
   var R = makeRenderer(canvas);
   var shotCanvas = document.createElement('canvas');
-  var RS = makeRenderer(shotCanvas, true);
+  var RS = null, shotCtx = shotCanvas.getContext('2d');
   var scene3 = new T.Scene();
   var camera = new T.PerspectiveCamera(40, 16 / 9, 0.1, 300);
 
@@ -1779,7 +1791,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
       var v = d['l_' + l.k], g = lgroups[l.k];
       tmpC.setRGB(v[1], v[2], v[3]).convertSRGBToLinear();
       g.lights.forEach(function (L) {
-        L.intensity = L.userData.base * v[0]; L.visible = v[0] > 0.001; L.color.copy(tmpC);
+        L.intensity = L.userData.base * v[0]; L.color.copy(tmpC);
         if (L.isSpotLight && l.spot) { L.angle = Math.min(89, d['a_' + l.k] / 2) * PI / 180; L.penumbra = 0; }
       });
       g.emit.forEach(function (m) { m.emissive.copy(tmpC); m.emissiveIntensity = GLOW * v[0]; });
@@ -1833,6 +1845,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     setScene(disp);
     camera.aspect = canvas.width / canvas.height; camera.updateProjectionMatrix();
     R.render(scene3, camera);
+    if (!vp.classList.contains('live')) vp.classList.add('live');
     vp.style.backgroundColor = css(disp.w);
     if (anim) request();
   }
@@ -1851,12 +1864,19 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   // a still of any setup from any view, for thumbnails and the sheet
   function still(st, v, W, H) {
     if (!ready) return '';
-    RS.setSize(W, H, false);
+    // drawn by the viewport's own renderer into a corner of its canvas, copied out, and the
+    // viewport drawn again before the page paints, so nothing shows
+    var cw = canvas.width, ch = canvas.height, k = Math.min(1, cw / W, ch / H);
+    var w = Math.max(1, Math.floor(W * k)), h = Math.max(1, Math.floor(H * k));
     setScene(toNum(st, v));
     camera.aspect = W / H; camera.updateProjectionMatrix();
-    RS.render(scene3, camera);
+    R.setViewport(0, 0, w, h); R.setScissor(0, 0, w, h); R.setScissorTest(true);
+    R.render(scene3, camera);
+    shotCanvas.width = W; shotCanvas.height = H;
+    shotCtx.drawImage(canvas, 0, ch - h, w, h, 0, 0, W, H);
+    R.setScissorTest(false); R.setViewport(0, 0, cw, ch);
     var url = shotCanvas.toDataURL('image/jpeg', 0.86);
-    request();   // put the viewport back
+    frame(performance.now());   // put the viewport back
     return url;
   }
   var WIDE = window.matchMedia('(min-width: 641px)');
@@ -1864,7 +1884,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   function thumbShot(st, v) { return still(st, v, 320, 320); }
 
   function size() {
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var dpr = Math.min(window.devicePixelRatio || 1, PHONE ? 1.5 : 2);
     R.setSize(Math.max(2, Math.round(canvas.clientWidth * dpr)), Math.max(2, Math.round(canvas.clientHeight * dpr)), false);
     request();
   }
