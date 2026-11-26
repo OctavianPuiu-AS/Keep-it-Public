@@ -1424,14 +1424,17 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   function hullMat(k) {
     if (!hullMats[k]) hullMats[k] = new T.ShaderMaterial({
       uniforms: { c: { value: new T.Vector3(CLAY[0], CLAY[1], CLAY[2]) }, o: { value: 1 }, w: { value: 0.0025 } },
-      vertexShader: 'uniform float w; void main() { vec4 p = modelViewMatrix * vec4(position, 1.0); vec3 n = normalize(normalMatrix * normal); p.xyz += n * w * -p.z; gl_Position = projectionMatrix * p; }',
+      vertexShader: 'uniform float w; void main() {' +
+        '\n#ifdef USE_INSTANCING\n vec4 p = modelViewMatrix * instanceMatrix * vec4(position, 1.0); vec3 n = normalize(normalMatrix * mat3(instanceMatrix) * normal);\n' +
+        ' #else\n vec4 p = modelViewMatrix * vec4(position, 1.0); vec3 n = normalize(normalMatrix * normal);\n #endif\n' +
+        ' p.xyz += n * w * -p.z; gl_Position = projectionMatrix * p; }',
       fragmentShader: 'uniform vec3 c; uniform float o; void main() { gl_FragColor = vec4(c, o); }',
       side: T.BackSide, transparent: true
     });
     return hullMats[k];
   }
   // per object group: its meshes, every material it has (they fade), the ones a swatch recolours
-  var groups = {}, gmats = {}, mats = {};
+  var groups = {}, gmats = {}, mats = {}, edgeCache = {};
   OBJECTS.forEach(function (o) { groups[o.k] = []; gmats[o.k] = []; mats[o.k] = []; });
   // per light group: its lights and its glowing bulbs
   var lgroups = {};
@@ -1527,7 +1530,8 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
       o.material = Array.isArray(o.material) ? list : list[0];
       var cut = list.some(function (m) { return m.map && m.alphaTest; });
       if (!cut && k !== 'tree' && tri < 30000) {
-        var ln = new T.LineSegments(new T.EdgesGeometry(o.geometry, 32), lineMat(g || 'room'));
+        var eg = edgeCache[o.geometry.uuid] || (edgeCache[o.geometry.uuid] = new T.EdgesGeometry(o.geometry, 32));
+        var ln = new T.LineSegments(eg, lineMat(g || 'room'));
         ln.raycast = function () {};
         o.add(ln);
       }
@@ -1535,6 +1539,46 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
       o.castShadow = true;
       o.receiveShadow = true;
       if (g) { groups[g].push(o); o.customDepthMaterial = shadowMat(g, list[0]); }
+    });
+    ['chairs', 'tables', 'stools'].forEach(function instanceGroup(gk) {
+      var byGeo = {};
+      (groups[gk] || []).forEach(function (o) { (byGeo[o.geometry.uuid] = byGeo[o.geometry.uuid] || []).push(o); });
+      Object.keys(byGeo).forEach(function (id) {
+        var list = byGeo[id];
+        if (list.length < 3 || Array.isArray(list[0].material)) return;
+        var o0 = list[0], n = list.length;
+        if (list.some(function (o) { return o.material !== o0.material || o.children.length !== o0.children.length; })) return;
+        scene3.updateMatrixWorld(true);
+        var im = new T.InstancedMesh(o0.geometry, o0.material, n);
+        var hull = o0.children.filter(function (c) { return c.isMesh; })[0];
+        var hm = hull ? new T.InstancedMesh(o0.geometry, hull.material, n) : null;
+        var line = o0.children.filter(function (c) { return c.isLineSegments; })[0];
+        var lp = line ? line.geometry.attributes.position : null, all = lp ? new Float32Array(lp.count * 3 * n) : null, v = new T.Vector3();
+        list.forEach(function (o, i) {
+          im.setMatrixAt(i, o.matrixWorld);
+          if (hm) hm.setMatrixAt(i, o.matrixWorld);
+          if (lp) for (var j = 0; j < lp.count; j++) {
+            v.fromBufferAttribute(lp, j).applyMatrix4(o.matrixWorld);
+            all.set([v.x, v.y, v.z], (i * lp.count + j) * 3);
+          }
+          o.parent.remove(o);
+        });
+        im.castShadow = true; im.receiveShadow = true;
+        im.customDepthMaterial = o0.customDepthMaterial;
+        im.name = o0.name + ' (x' + n + ')';
+        if (hm) { hm.raycast = function () {}; im.add(hm); }
+        if (all) {
+          var lg = new T.BufferGeometry(); lg.setAttribute('position', new T.BufferAttribute(all, 3));
+          var ml = new T.LineSegments(lg, line.material); ml.raycast = function () {};
+          ml.matrixAutoUpdate = false;
+          scene3.add(ml);
+          im.userData.lines = ml;
+        }
+        scene3.add(im);
+        groups[gk] = groups[gk].filter(function (o) { return list.indexOf(o) < 0; });
+        groups[gk].push(im);
+        if (im.userData.lines) groups[gk].push(im.userData.lines);
+      });
     });
     // the building (not the furniture, the tree or the lamps): what the camera may not pass
     meshes.forEach(function (o) {
@@ -2462,9 +2506,22 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   /* ---------- start ---------- */
   drawScene(); drawScope(); drawViews(); syncJob(); drawJob();
   onReady.push(function () {
-    caps.forEach(function (c) { c.thumb = thumbShot(merge(BASE, c.data), (c.data.cam && camFor(c.data.cam)) || views[1]); });
     drawCaps(); go(0);
-    setTimeout(renderAll, 250);
+    // wait for the scene's first frame on screen, then one picture per turn of the page
+    // (a hidden tab gets no frames, so a short timer starts it too)
+    var begun = false;
+    requestAnimationFrame(function () { requestAnimationFrame(begin); });
+    setTimeout(begin, 120);
+    function begin() {
+      if (begun) return; begun = true;
+      var i = 0;
+      (function next() {
+        if (i >= caps.length) { setTimeout(renderAll, 150); return; }
+        var c = caps[i++];
+        if (!c.thumb) { c.thumb = thumbShot(merge(BASE, c.data), (c.data.cam && camFor(c.data.cam)) || views[1]); drawCaps(); }
+        setTimeout(next, 30);
+      })();
+    }
   });
 
   /* ---------- first-visit tour ---------- */
