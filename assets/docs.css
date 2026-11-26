@@ -9,7 +9,7 @@
   --hair: #E8DACF;
   --tint: rgba(158, 83, 48, 0.08);
   --font: "Futura PT", Futura, Jost, "Century Gothic", sans-serif;
-  color-scheme: light;
+  color-scheme: only light;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; overflow-x: hidden; scroll-padding-top: 90px; }
