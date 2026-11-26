@@ -1338,11 +1338,43 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   scene3.add(hemi);
   var sun = new T.DirectionalLight(0xffffff, 2.2 * PI);
   sun.castShadow = true;
-  sun.shadow.mapSize.set(PHONE ? 1024 : 2048, PHONE ? 1024 : 2048);
+  var SMAP = Math.min(PHONE ? 2048 : 4096, R.capabilities.maxTextureSize || 2048);
+  sun.shadow.mapSize.set(SMAP, SMAP);
   var sc = sun.shadow.camera; sc.left = -14; sc.right = 14; sc.top = 14; sc.bottom = -14; sc.near = 1; sc.far = 90;
   sun.shadow.bias = -0.0005;
   sun.shadow.normalBias = 0.03;
   scene3.add(sun); scene3.add(sun.target);
+  R.shadowMap.autoUpdate = false; R.shadowMap.needsUpdate = true;
+  // a face turned away from the sun is in its own shadow. The toon steps still gave it some sun,
+  // and the shadow test is unreliable at those angles (blotches on the planter's far side), so
+  // fade the sun out across the turn instead of asking the shadow map
+  (function () {
+    var k = 'vDirectionalShadowCoord[ i ] ) : 1.0;', ch = T.ShaderChunk.lights_fragment_begin;
+    if (ch.split(k).length === 2) T.ShaderChunk.lights_fragment_begin = ch.replace(k, k +
+      ' if ( receiveShadow ) directLight.color *= smoothstep( -0.02, 0.1, dot( geometry.normal, directLight.direction ) );');
+  })();
+  var shadowBox = null, shadowKey = '', shM = new T.Matrix4(), shV = new T.Vector3(), shUp = new T.Vector3(0, 1, 0);
+  function fitShadow(d) {
+    var key = sun.position.toArray().map(function (x) { return x.toFixed(3); }).join() + '|' + JSON.stringify(d.vis) + '|' + (sun.intensity > 0);
+    if (key === shadowKey) return;
+    shadowKey = key; R.shadowMap.needsUpdate = true;
+    if (!shadowBox) {
+      var b = new T.Box3(), n = 0;
+      scene3.traverse(function (o) { if (o.isMesh && o.castShadow) { b.union(new T.Box3().setFromObject(o)); n++; } });
+      if (n < 10) { shadowKey = ''; return; }   // not built yet: keep the wide default, try again next time
+      shadowBox = b.expandByScalar(0.25);
+    }
+    // the building's eight corners, seen from the sun
+    shM.lookAt(sun.position, sun.target.position, shUp).setPosition(sun.position).invert();
+    var x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9, z0 = 1e9, z1 = -1e9, bb = shadowBox;
+    for (var i = 0; i < 8; i++) {
+      shV.set(i & 1 ? bb.max.x : bb.min.x, i & 2 ? bb.max.y : bb.min.y, i & 4 ? bb.max.z : bb.min.z).applyMatrix4(shM);
+      x0 = Math.min(x0, shV.x); x1 = Math.max(x1, shV.x); y0 = Math.min(y0, shV.y); y1 = Math.max(y1, shV.y); z0 = Math.min(z0, shV.z); z1 = Math.max(z1, shV.z);
+    }
+    var c = sun.shadow.camera;
+    c.left = x0; c.right = x1; c.bottom = y0; c.top = y1; c.near = Math.max(0.1, -z1 - 1); c.far = -z0 + 1;
+    c.updateProjectionMatrix();
+  }
 
   // toon look, as before: three flat steps of light
   var steps = new T.DataTexture(new Uint8Array([110, 185, 255]), 3, 1, T.LuminanceFormat);
@@ -1791,6 +1823,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     var lc = lightColor(d.lw);
     sun.color.setRGB(lc[0], lc[1], lc[2]).lerp(new T.Color(1, 0.86, 0.7), 0.18);
     sun.intensity = 2.6 * d.lp * d.so * (1 - 0.9 * night) * PI;
+    fitShadow(d);
     // the light groups: each switches and changes colour as one
     LIGHTS.forEach(function (l) {
       var v = d['l_' + l.k], g = lgroups[l.k];
