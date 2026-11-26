@@ -1023,9 +1023,9 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   }
   #playground .rp .sheet.fit .cell { aspect-ratio: auto; height: var(--ch); }
   .vp .poster { position: absolute; inset: 0; z-index: 1; width: 100%; height: 100%; object-fit: cover; pointer-events: none; transition: opacity 0.6s ease; }
-  .vp.live .poster { opacity: 0; }
+  .vp.ready3d .poster { opacity: 0; }
   .vp .vp-wait { left: 50%; bottom: 14px; top: auto; transform: translateX(-50%); z-index: 3; white-space: nowrap; transition: opacity 0.3s; animation: kiwait 1.6s ease-in-out infinite; }
-  .vp.live .vp-wait { opacity: 0; animation: none; }
+  .vp.ready3d .vp-wait { opacity: 0; animation: none; }
   @keyframes kiwait { 50% { opacity: 0.55; } }
   @media (prefers-reduced-motion: reduce) { .vp .vp-wait { animation: none; } }
   .vp .mdock { z-index: 5; }
@@ -1849,7 +1849,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     setScene(disp);
     camera.aspect = canvas.width / canvas.height; camera.updateProjectionMatrix();
     R.render(scene3, camera);
-    if (!vp.classList.contains('live')) vp.classList.add('live');
+    if (!vp.classList.contains('ready3d')) vp.classList.add('ready3d');
     vp.style.backgroundColor = css(disp.w);
     if (anim) request();
   }
