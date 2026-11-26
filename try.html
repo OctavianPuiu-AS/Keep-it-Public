@@ -2474,7 +2474,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   // skippable, and nothing flashes.
   var TOUR_KEY = 'keepit-try-tour-1';
   var tour = null;
-  function tourSeen() { try { return localStorage.getItem(TOUR_KEY) === '1'; } catch (e) { return false; } }
+  function tourSeen() { if (document.documentElement.hasAttribute('data-embed')) return false; try { return localStorage.getItem(TOUR_KEY) === '1'; } catch (e) { return false; } }
   function tourMark() { try { localStorage.setItem(TOUR_KEY, '1'); } catch (e) {} }
   var GLIDE = 1350, PAUSE = 450, GAP = 900, AFTER = 2400, SCROLL = 1000;
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
