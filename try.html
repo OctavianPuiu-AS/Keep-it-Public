@@ -2902,3 +2902,108 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
 <script src="assets/docs.js?v=10"></script>
 </body>
 </html>
+
+<!--snd--><script>
+/* button sounds v4, "old-school": 8-bit console style. Square and triangle waves with stepped
+   pitch and hard edges, plus a noise channel, like a 1980s TV game chip. Original blips, no game's tunes.
+   Made on the spot with Web Audio (no files); only for real presses. (v1-v3 kept as sounds_v1..v3.html) */
+(function () {
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC) return;
+  var ac = null, out = null, pulse = null;
+  function ctx() {
+    if (!ac) {
+      ac = new AC(); out = ac.createGain(); out.gain.value = 0.5; out.connect(ac.destination);
+      // a 25% pulse wave, the thin, nasal voice of the old chips
+      var n = 32, re = new Float32Array(n), im = new Float32Array(n);
+      for (var k = 1; k < n; k++) im[k] = (2 / (k * Math.PI)) * Math.sin(k * Math.PI * 0.25);
+      pulse = ac.createPeriodicWave(re, im);
+    }
+    if (ac.state === 'suspended') ac.resume();
+    return ac;
+  }
+  // a run of notes, each held for 'step' seconds, no glide between them: [freq, ...]
+  function seq(notes, step, vol, wave, t0) {
+    var o = ac.createOscillator(), g = ac.createGain(), t = ac.currentTime + (t0 || 0), end = t + notes.length * step;
+    if (wave === 'tri') o.type = 'triangle'; else if (wave === 'sq') o.type = 'square'; else o.setPeriodicWave(pulse);
+    notes.forEach(function (f, i) { o.frequency.setValueAtTime(f, t + i * step); });
+    g.gain.setValueAtTime(vol, t);
+    g.gain.setValueAtTime(vol, end - 0.01);
+    g.gain.linearRampToValueAtTime(0, end);
+    o.connect(g); g.connect(out); o.start(t); o.stop(end + 0.01);
+  }
+  // the noise channel: a short burst of coarse, low-rate noise (it sounds crunchy on purpose)
+  function crunch(t0, dur, vol, rate) {
+    var sr = ac.sampleRate, n = Math.floor(sr * dur), b = ac.createBuffer(1, n, sr), d = b.getChannelData(0), hold = Math.max(1, Math.floor(sr / (rate || 8000))), v = 0;
+    for (var i = 0; i < n; i++) { if (i % hold === 0) v = Math.random() < 0.5 ? -1 : 1; d[i] = v * (1 - i / n); }
+    var s = ac.createBufferSource(), g = ac.createGain(); s.buffer = b; g.gain.value = vol;
+    s.connect(g); g.connect(out); s.start(ac.currentTime + (t0 || 0));
+  }
+  function hz(semi) { return 440 * Math.pow(2, semi / 12); }   // semitones from A4
+  var S = {
+    tap:     function () { seq([hz(15)], 0.035, 0.07); },
+    on:      function () { seq([hz(10), hz(17)], 0.04, 0.07); },
+    off:     function () { seq([hz(17), hz(10)], 0.04, 0.06); },
+    keep:    function () { seq([hz(7), hz(11), hz(14), hz(19)], 0.045, 0.07); },
+    restore: function () { var f = []; for (var i = 0; i < 8; i++) f.push(hz(-5 + i * 3)); seq(f, 0.02, 0.06); },
+    view:    function () { seq([hz(12), hz(19)], 0.03, 0.06, 'sq'); },
+    render:  function () { crunch(0, 0.06, 0.12, 12000); seq([hz(0), hz(4), hz(7), hz(12), hz(16), hz(19), hz(24)], 0.035, 0.065, null, 0.06); },
+    del:     function () { var f = []; for (var i = 0; i < 9; i++) f.push(hz(5 - i * 2)); seq(f, 0.025, 0.12, 'tri'); crunch(0, 0.08, 0.06, 3000); },
+    dup:     function () { seq([hz(14)], 0.035, 0.065); seq([hz(14)], 0.035, 0.065, null, 0.07); },
+    save:    function () { seq([hz(12), hz(16), hz(19), hz(24)], 0.06, 0.065); seq([hz(-12), hz(-8), hz(-5), hz(0)], 0.06, 0.11, 'tri'); }
+  };
+  function kind(b) {
+    var id = b.id || '';
+    if (id === 'capture') return 'keep';
+    if (id === 'prev' || id === 'next' || id === 'refresh' || id === 'latest' || id === 'cell-reset') return 'restore';
+    if (id === 'render') return 'render';
+    if (id === 'del') return 'del';
+    if (id === 'dup' || id === 'saveview') return 'dup';
+    if (id === 'cell-save' || id === 'savepng') return 'save';
+    if (b.classList.contains('vpill') && !b.classList.contains('add')) return 'view';
+    if (b.hasAttribute('aria-pressed')) return b.getAttribute('aria-pressed') === 'true' ? 'off' : 'on';   // read before the page flips it
+    if (b.hasAttribute('aria-checked')) return b.getAttribute('aria-checked') === 'true' ? 'off' : 'on';
+    return 'tap';
+  }
+  // the sound switch: a round bubble in the lower right corner; remembered on this device
+  var muted = false;
+  try { muted = localStorage.getItem('keepit-try-muted') === '1'; } catch (err) {}
+  var css = document.createElement('style');
+  css.textContent = '.snd-btn { position: fixed; right: 16px; bottom: 16px; z-index: 31; width: 44px; height: 44px; padding: 0; display: grid; place-items: center; border: 1px solid var(--clay); border-bottom-width: 3px; border-radius: 50%; background: var(--card); color: var(--clay); cursor: pointer; box-shadow: 0 2px 10px rgba(40, 24, 16, 0.18); transition: bottom 0.2s; }' +
+    '.snd-btn svg { width: 20px; height: 20px; }' +
+    '.snd-btn .x { display: none; } .snd-btn.off .x { display: inline; } .snd-btn.off { color: #9C8A7E; border-color: #9C8A7E; }' +
+    '@media (hover: hover) { .snd-btn:hover { background: var(--tint); } }' +
+    '.snd-btn:focus-visible { outline: 2px solid var(--clay); outline-offset: 3px; }';
+  document.head.appendChild(css);
+  var btn = document.createElement('button');
+  btn.type = 'button'; btn.className = 'snd-btn';
+  btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/><path class="x" d="M3 3l18 18"/></svg>';
+  function paint() {
+    btn.classList.toggle('off', muted);
+    btn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+    btn.setAttribute('aria-label', muted ? 'Sounds off. Turn the sounds on' : 'Sounds on. Turn the sounds off');
+    btn.title = muted ? 'Sounds off' : 'Sounds on';
+  }
+  btn.addEventListener('click', function () {
+    muted = !muted; paint();
+    try { localStorage.setItem('keepit-try-muted', muted ? '1' : '0'); } catch (err) {}
+    if (!muted) { try { ctx(); S.on(); } catch (err) {} }
+  });
+  // on the docs site's phones the Contents button sits in that corner: stand just above it
+  function place() {
+    var t = document.querySelector('.side-toggle'), up = 16;
+    if (t && getComputedStyle(t).display !== 'none' && t.offsetHeight) up = 16 + t.offsetHeight + 10;
+    btn.style.bottom = up + 'px';
+  }
+  paint();
+  document.body.appendChild(btn);
+  place(); window.addEventListener('resize', place); setTimeout(place, 500);
+  document.addEventListener('click', function (e) {
+    if (!e.isTrusted || muted) return;
+    var b = e.target.closest && e.target.closest('button, [role="button"], [role="switch"], [role="checkbox"], .rp .cell');
+    if (!b || b.disabled || !b.closest('#playground, .tour-tip')) return;
+    try { ctx(); S[kind(b)](); } catch (err) {}
+  }, true);
+})();
+</script><!--/snd-->
