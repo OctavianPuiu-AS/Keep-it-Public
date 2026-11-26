@@ -948,6 +948,11 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   .tour-next { flex: none; width: 20px; height: 20px; padding: 0; display: grid; place-items: center; border-radius: 6px; font-size: 11px; line-height: 1; }
   .tour-dots { position: absolute; left: 0; bottom: 0; display: block; height: 2px; width: 0; background: var(--clay); transition: width 0.6s ease; }
   .tour-dots i { display: none; }
+  .tour-play { display: none; flex: none; align-items: center; gap: 4px; height: 20px; padding: 0 8px 0 6px; border: 1px solid var(--clay); border-radius: 6px; background: var(--clay); color: var(--card); font: 600 11px/1 var(--font); cursor: pointer; }
+  .tour-play svg { width: 10px; height: 10px; }
+  .tour-play:hover { filter: brightness(1.08); }
+  .tour-tip.paused .tour-play { display: inline-flex; }
+  .tour-tip.paused .tour-dots { opacity: 0.4; }
   /* the scene's option bubble (colours, sun) a fifth smaller */
   .vp .mopts { transform: scale(0.8); transform-origin: right top; }
   .vp .mrow.low .mopts { transform-origin: right bottom; }
@@ -2534,7 +2539,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     clearTimeout(tour.sn);
     tour.sn = setTimeout(function () { if (tour) { tour.tap.classList.remove('snap'); tour.tip.classList.remove('snap'); } }, 160);
   }
-  function wait(ms, f) { if (tour) tour.t = setTimeout(function () { if (tour) f(); }, ms); }
+  function wait(ms, f) { if (tour) { var g = tour.gen; tour.t = setTimeout(function () { if (tour && tour.gen === g) f(); }, ms); } }
   function press(cb) {
     tour.tap.classList.remove('press'); void tour.tap.offsetWidth; tour.tap.classList.add('press');
     wait(340, cb);
@@ -2542,12 +2547,12 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
 
   // ---- moving the page / the panel strip ----
   function tourScroll(pn, toX, toY, cb) {
-    var y0 = window.scrollY, t0 = performance.now(), yDone = toY === null, xDone = toX === null, fin = false;
+    var y0 = window.scrollY, t0 = performance.now(), yDone = toY === null, xDone = toX === null, fin = false, g = tour.gen;
     var dur = toY === null ? 0 : Math.min(2000, SCROLL + Math.abs(toY - y0) * 1.2);
     var finish = function () {
       if (fin || !xDone || !yDone) return;
       fin = true;
-      if (!tour) return;
+      if (!tour || tour.gen !== g) return;
       tour.hold = false; follow();
       wait(200, cb);
     };
@@ -2566,7 +2571,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
       setTimeout(function () { xDone = true; finish(); }, xdur + 30);
     }
     (function f(now) {
-      if (!tour || fin) return;
+      if (!tour || fin || tour.gen !== g) return;
       if (!yDone) {
         var k = Math.min(1, (now - t0) / dur);
         window.scrollTo({ top: y0 + (toY - y0) * ease(k), behavior: 'instant' });
@@ -2589,6 +2594,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
   // ---- the acts ----
   function doAct(a, done) {
     if (!tour) return;
+    var g = tour.gen;
     if (a.skip && a.skip()) { done(); return; }
     var el = (a.tap || a.point || a.drag || a.slide)();
     if (!el) { done(); return; }
@@ -2603,7 +2609,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
         tour.tap.style.transitionDuration = d + 'ms';
         p = spot(v1); fingerAt(p[0], p[1]);
         var iv = setInterval(function () {
-          if (!tour || !el.isConnected) { clearInterval(iv); return; }
+          if (!tour || tour.gen !== g || !el.isConnected) { clearInterval(iv); return; }
           var k = Math.min(1, (Date.now() - t0) / d), v = Math.round(v0 + (v1 - v0) * ease(k));
           if (+el.value !== v) { el.value = v; el.dispatchEvent(new Event('input', { bubbles: true })); }
           if (k >= 1) {
@@ -2626,7 +2632,7 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
         tour.tap.style.transitionDuration = d + 'ms';
         fingerAt(x + a.dx, y);
         var iv = setInterval(function () {
-          if (!tour) { clearInterval(iv); return; }
+          if (!tour || tour.gen !== g) { clearInterval(iv); return; }
           var k = Math.min(1, (Date.now() - t0) / d), want = -a.dx * 0.3 * ease(k);
           orbit(want - turned, 0); turned = want;
           if (k >= 1) {
@@ -2660,19 +2666,44 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     document.removeEventListener('keydown', tour.user, true);
     tour.tap.remove(); tour.tip.remove();
     $('#vp').classList.remove('touring');
-    var pnS = $('#panels'), slid = tour.slid;
-    if (pnS) {
-      pnS.style.scrollSnapType = 'none';
-      [].forEach.call(pnS.children, function (k) { k.style.transition = 'none'; k.style.transform = ''; k.style.willChange = ''; });
-      pnS.style.overflowX = '';
-      if (slid) pnS.scrollTo({ left: slid.toX, behavior: 'instant' });
-      void pnS.offsetWidth;
-      [].forEach.call(pnS.children, function (k) { k.style.transition = ''; });
-      requestAnimationFrame(function () { pnS.style.scrollSnapType = ''; });
-    }
+    settlePanels();
     ALL.forEach(function (k) { scope[k] = true; }); drawScope();
     tour = null;
     tourMark();
+  }
+
+  // the panels' sideways slide is put back as a real scroll, so the person can use them while it waits
+  function settlePanels() {
+    var pnS = $('#panels'), slid = tour.slid;
+    if (!pnS) return;
+    pnS.style.scrollSnapType = 'none';
+    [].forEach.call(pnS.children, function (k) { k.style.transition = 'none'; k.style.transform = ''; k.style.willChange = ''; });
+    pnS.style.overflowX = '';
+    if (slid) pnS.scrollTo({ left: slid.toX, behavior: 'instant' });
+    void pnS.offsetWidth;
+    [].forEach.call(pnS.children, function (k) { k.style.transition = ''; });
+    requestAnimationFrame(function () { pnS.style.scrollSnapType = ''; });
+    tour.slid = null; tour.hold = false;
+  }
+  function tourPause() {
+    if (!tour || tour.paused) return;
+    if (tour.steps[tour.n] && tour.steps[tour.n].end) { tourStop(); return; }   // the last word: touching just closes it
+    tour.paused = true; tour.gen++;
+    clearTimeout(tour.t);
+    settlePanels();
+    tour.fEl = null;
+    tour.tap.classList.remove('hold', 'press'); tour.tap.style.transitionDuration = ''; tour.tap.style.opacity = '0';
+    tour.txt.style.opacity = '1';
+    tour.txt.textContent = 'Paused. Have a go yourself, or press Resume to carry on.';
+    tour.tip.classList.add('paused');
+    placeTip();
+  }
+  function tourResume() {
+    if (!tour || !tour.paused) return;
+    tour.paused = false; tour.gen++;
+    tour.tip.classList.remove('paused');
+    if (cellEdit) cancelCell(true);
+    tourStep(tour.n);
   }
 
   function tourStep(n) {
@@ -2734,15 +2765,18 @@ footer { max-width: 1180px; margin: 56px auto 0; padding-top: 16px; border-top: 
     tap.className = 'tour-tap'; tap.setAttribute('aria-hidden', 'true');
     var tip = document.createElement('div');
     tip.className = 'tour-tip'; tip.setAttribute('role', 'status');
-    tip.innerHTML = '<p></p><button type="button" class="tour-next" aria-label="Skip the tour" title="Skip">✕</button><span class="tour-dots"></span>';
+    tip.innerHTML = '<p></p><button type="button" class="tour-play" aria-label="Resume the demo" title="Resume">' +
+      '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.6 2.4v7.2L9.4 6z" fill="currentColor"/></svg>Resume</button>' +
+      '<button type="button" class="tour-next" aria-label="Skip the tour" title="Skip">✕</button><span class="tour-dots"></span>';
     var vr = $('#vp').getBoundingClientRect();
     tap.style.transform = 'translate(' + (vr.left + vr.width / 2 - 17) + 'px,' + (vr.top + vr.height / 2 - 17) + 'px)';
     tap.style.opacity = '0';
     document.body.appendChild(tap); document.body.appendChild(tip);
     $('#vp').classList.add('touring');
-    tour = { tap: tap, tip: tip, txt: tip.querySelector('p'), dots: tip.querySelector('.tour-dots'), next: tip.querySelector('.tour-next'), steps: tourSteps(), n: 0 };
+    tour = { tap: tap, tip: tip, txt: tip.querySelector('p'), dots: tip.querySelector('.tour-dots'), next: tip.querySelector('.tour-next'), steps: tourSteps(), n: 0, gen: 0, paused: false };
     tour.next.addEventListener('click', tourStop);
-    tour.user = function (e) { if (tour && !tour.busy && !tour.tip.contains(e.target)) tourStop(); };
+    tip.querySelector('.tour-play').addEventListener('click', tourResume);
+    tour.user = function (e) { if (tour && !tour.busy && !tour.tip.contains(e.target)) tourPause(); };
     window.addEventListener('scroll', follow, true);
     window.addEventListener('resize', follow);
     document.addEventListener('pointerdown', tour.user, true);
